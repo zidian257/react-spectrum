@@ -64,8 +64,9 @@ export const Provider = React.forwardRef((props: ProviderProps, ref: RefObject<H
   if (!prevContext || theme !== prevContext.theme || colorScheme !== prevContext.colorScheme || scale !== prevContext.scale || Object.keys(domProps).length > 0) {
     contents = (
       <ProviderWrapper {...props} ref={ref}>
-        {!prevContext && <ToastContainer />}
-        {contents}
+        <ToastContainer>
+          {contents}
+        </ToastContainer>
       </ProviderWrapper>
     );
   }
@@ -75,9 +76,11 @@ export const Provider = React.forwardRef((props: ProviderProps, ref: RefObject<H
   return (
     <Context.Provider value={context}>
       <I18nProvider locale={locale}>
-        <ModalProvider>
-          {contents}
-        </ModalProvider>
+
+          <ModalProvider>
+            {contents}
+          </ModalProvider>
+
       </I18nProvider>
     </Context.Provider>
   );
