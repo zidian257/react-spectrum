@@ -6,7 +6,7 @@ import {ModalProvider, useModalProvider} from '@react-aria/dialog';
 import {ProviderContext, ProviderProps} from './types';
 import React, {RefObject, useContext, useEffect} from 'react';
 import styles from '@adobe/spectrum-css-temp/components/page/vars.css';
-import {ToastContainer} from '@react-spectrum/toast';
+import {ToastProvider} from '@react-spectrum/toast';
 import typographyStyles from '@adobe/spectrum-css-temp/components/typography/vars.css';
 import {useColorScheme, useScale} from './mediaQueries';
 // @ts-ignore
@@ -64,9 +64,9 @@ export const Provider = React.forwardRef((props: ProviderProps, ref: RefObject<H
   if (!prevContext || theme !== prevContext.theme || colorScheme !== prevContext.colorScheme || scale !== prevContext.scale || Object.keys(domProps).length > 0) {
     contents = (
       <ProviderWrapper {...props} ref={ref}>
-        <ToastContainer>
+        <ToastProvider>
           {contents}
-        </ToastContainer>
+        </ToastProvider>
       </ProviderWrapper>
     );
   }
@@ -76,11 +76,9 @@ export const Provider = React.forwardRef((props: ProviderProps, ref: RefObject<H
   return (
     <Context.Provider value={context}>
       <I18nProvider locale={locale}>
-
-          <ModalProvider>
-            {contents}
-          </ModalProvider>
-
+        <ModalProvider>
+          {contents}
+        </ModalProvider>
       </I18nProvider>
     </Context.Provider>
   );
