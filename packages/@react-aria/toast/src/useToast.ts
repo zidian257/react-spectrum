@@ -2,6 +2,7 @@ import {AllHTMLAttributes} from 'react';
 import intlMessages from '../intl/*.json';
 import {PressProps} from '@react-aria/interactions';
 import {ToastProps} from '@react-types/toast';
+import {useId} from '@react-aria/utils';
 import {useMessageFormatter} from '@react-aria/i18n';
 
 interface ToastAria {
@@ -13,6 +14,7 @@ interface ToastAria {
 
 export function useToast(props: ToastProps): ToastAria {
   let {
+    id,
     onAction,
     onClose,
     role = 'alert',
@@ -35,6 +37,7 @@ export function useToast(props: ToastProps): ToastAria {
 
   return {
     toastProps: {
+      id: useId(id),
       role
     },
     iconProps,

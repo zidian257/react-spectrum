@@ -24,6 +24,7 @@ import InfoMedium from '@spectrum-icons/ui/InfoMedium';
 import React, {RefObject} from 'react';
 import styles from '@adobe/spectrum-css-temp/components/toast/vars.css';
 import SuccessMedium from '@spectrum-icons/ui/SuccessMedium';
+import toastContainerStyles from './toastContainer.css';
 import {ToastProps} from '@react-types/toast';
 import {useProviderProps} from '@react-spectrum/provider';
 import {useToast} from '@react-aria/toast';
@@ -52,6 +53,8 @@ export const Toast = React.forwardRef((props: ToastProps, ref: RefObject<HTMLEle
   } = completeProps;
   let Icon = ICONS[variant];
 
+  console.log('ref', ref);
+
   return (
     <div
       {...filterDOMProps(otherProps)}
@@ -60,7 +63,11 @@ export const Toast = React.forwardRef((props: ToastProps, ref: RefObject<HTMLEle
       className={classNames(styles,
         'spectrum-Toast',
         {['spectrum-Toast--' + variant]: variant},
-        className
+        className,
+        classNames(
+          toastContainerStyles,
+          'spectrum-Toast'
+        )
       )}>
       {Icon &&
         <Icon

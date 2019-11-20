@@ -71,8 +71,6 @@ export const Provider = React.forwardRef((props: ProviderProps, ref: RefObject<H
     );
   }
 
-  console.log('contents', contents);
-
   return (
     <Context.Provider value={context}>
       <I18nProvider locale={locale}>
