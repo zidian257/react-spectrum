@@ -24,79 +24,92 @@ describe('TooltipTrigger', function () {
     cleanup();
   });
 
-  it('triggered by click event', function () {
-    let {getByRole} = render(
-      <Provider theme={theme}>
-        <TooltipTrigger type="click">
-          <ActionButton>Trigger</ActionButton>
-          <Tooltip>content</Tooltip>
-        </TooltipTrigger>
-      </Provider>
-    );
+  describe('click related tests', function () {
 
-    expect(() => {
-      getByRole('tooltip');
-    }).toThrow();
+    it('triggered by click event', function () {
+      let {getByRole} = render(
+        <Provider theme={theme}>
+          <TooltipTrigger type="click">
+            <ActionButton>Trigger</ActionButton>
+            <Tooltip>content</Tooltip>
+          </TooltipTrigger>
+        </Provider>
+      );
 
-    let button = getByRole('button');
-    triggerPress(button);
+      expect(() => {
+        getByRole('tooltip');
+      }).toThrow();
 
-    let tooltip = getByRole('tooltip');
-    expect(tooltip).toBeVisible();
+      let button = getByRole('button');
+      triggerPress(button);
 
-  });
+      let tooltip = getByRole('tooltip');
+      expect(tooltip).toBeVisible();
 
-  it('pressing esc should close the tooltip after a click event', async function () {
-    let {getByRole} = render(
-      <Provider theme={theme}>
-        <TooltipTrigger type="click">
-          <ActionButton>Trigger</ActionButton>
-          <Tooltip>content</Tooltip>
-        </TooltipTrigger>
-      </Provider>
-    );
-
-    let button = getByRole('button');
-    triggerPress(button);
-
-    let tooltip = getByRole('tooltip');
-
-    // wait for appearance
-    await wait(() => {
-      expect(tooltip).toBeInTheDocument();
     });
 
-    fireEvent.keyDown(button, {key: 'Escape'});
-    await waitForDomChange();
+    it('pressing esc should close the tooltip after a click event', async function () {
+      let {getByRole} = render(
+        <Provider theme={theme}>
+          <TooltipTrigger type="click">
+            <ActionButton>Trigger</ActionButton>
+            <Tooltip>content</Tooltip>
+          </TooltipTrigger>
+        </Provider>
+      );
 
-    expect(tooltip).not.toBeInTheDocument();
-  });
+      let button = getByRole('button');
+      triggerPress(button);
 
-  it('pressing keydown + altKey should close the tooltip after a click event', async function () {
-    let {getByRole} = render(
-      <Provider theme={theme}>
-        <TooltipTrigger type="click">
-          <ActionButton>Trigger</ActionButton>
-          <Tooltip>content</Tooltip>
-        </TooltipTrigger>
-      </Provider>
-    );
+      let tooltip = getByRole('tooltip');
 
-    let button = getByRole('button');
-    triggerPress(button);
+      // wait for appearance
+      await wait(() => {
+        expect(tooltip).toBeInTheDocument();
+      });
 
-    let tooltip = getByRole('tooltip');
+      fireEvent.keyDown(button, {key: 'Escape'});
+      await waitForDomChange();
 
-    // wait for appearance
-    await wait(() => {
-      expect(tooltip).toBeInTheDocument();
+      expect(tooltip).not.toBeInTheDocument();
     });
 
-    fireEvent.keyDown(button, {key: 'ArrowDown', altKey: true});
-    await waitForDomChange();
+    it('pressing keydown + altKey should close the tooltip after a click event', async function () {
+      let {getByRole} = render(
+        <Provider theme={theme}>
+          <TooltipTrigger type="click">
+            <ActionButton>Trigger</ActionButton>
+            <Tooltip>content</Tooltip>
+          </TooltipTrigger>
+        </Provider>
+      );
 
-    expect(tooltip).not.toBeInTheDocument();
+      let button = getByRole('button');
+      triggerPress(button);
+
+      let tooltip = getByRole('tooltip');
+
+      // wait for appearance
+      await wait(() => {
+        expect(tooltip).toBeInTheDocument();
+      });
+
+      fireEvent.keyDown(button, {key: 'ArrowDown', altKey: true});
+      await waitForDomChange();
+
+      expect(tooltip).not.toBeInTheDocument();
+    });
+
   });
+
+  describe('hover related tests', function () {
+
+    it('triggered by hover event', function () {
+
+    });
+
+  });
+
 
 
 });
