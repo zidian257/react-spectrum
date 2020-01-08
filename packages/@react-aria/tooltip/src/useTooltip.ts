@@ -26,7 +26,7 @@ export function useTooltip(props: TooltipProps): TooltipAria {
     id: tooltipId
   };
 
-  console.log('useTooltip', contextProps)
+  // console.log('useTooltip', contextProps)
 
   if (contextProps) {
     let onMouseLeave = () => {
@@ -34,7 +34,11 @@ export function useTooltip(props: TooltipProps): TooltipAria {
         contextProps.onHoverTooltip(false);
       }
     };
+    let onMouseEnter = () => {
+      console.log('on mouse enter from useTooltip');
+    }
     tooltipProps.onMouseLeave = onMouseLeave;
+    tooltipProps.onMouseEnter = onMouseEnter;
   }
 
   return {

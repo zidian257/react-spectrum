@@ -119,6 +119,7 @@ export function useTooltipTrigger(props: TooltipTriggerProps): TooltipTriggerAri
   };
 
   let exit = (e) => {
+    console.log('exit function called')
     let hoveringOverTooltip = false;
     const related = e.relatedTarget || e.nativeEvent.toElement;
     const parent = related.parentNode;
@@ -126,7 +127,8 @@ export function useTooltipTrigger(props: TooltipTriggerProps): TooltipTriggerAri
       hoveringOverTooltip = true;
     }
     if (visibleTooltips.length > 0 && hoveringOverTooltip === false) {
-      state.setOpen(false);
+      console.log('exit function closing the tooltip')
+      // state.setOpen(false);
     }
     visibleTooltips.pop();
   };
