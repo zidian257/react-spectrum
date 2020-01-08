@@ -15,4 +15,6 @@ describe('useTooltip', function () {
     let {tooltipProps} = renderTooltipHook({children: 'Test Tooltip'});
     expect(tooltipProps.role).toBe('tooltip');
   });
+
+  // add a test to check to make sure it has an id 
 });
