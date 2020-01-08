@@ -4,9 +4,7 @@ import {DOMProps} from '@react-types/shared';
 import {TooltipState} from '@react-stately/tooltip';
 import {useId} from '@react-aria/utils';
 import {useOverlay} from '@react-aria/overlays';
-
 import {HoverProps, useHover} from '@react-aria/interactions';
-import {HoverResponderContext} from '@react-aria/interactions';
 
 interface TooltipProps extends DOMProps {
   onClose?: () => void,
@@ -35,13 +33,10 @@ interface TooltipTriggerAria {
   clickTriggerProps: AllHTMLAttributes<HTMLElement>
 }
 
-let visibleTooltips = [];
+let visibleTooltips = []; // can used to track if a user has scrolled down the page thus 'hiding' an open tooltip
 let tooltipStates = [];
-//let hoverHideTimeout = null;
-//let hoverShowTimeout = null;
 
 export function useTooltipTrigger(props: TooltipTriggerProps): TooltipTriggerAria {
-  // let contextProps = useContext(HoverResponderContext);
   let tooltipTriggerId = useId();
 
   let {
@@ -66,40 +61,6 @@ export function useTooltipTrigger(props: TooltipTriggerProps): TooltipTriggerAri
     onClose: onClose,
     isOpen: state.open
   });
-
-  // console.log('useTooltipTrigger', contextProps)
-  //
-  // let {hoverProps} = useHover({
-  //   onHover: () => {
-  //     console.log('I am hovering');
-  //
-  //     // handleDelayedShow2()
-  //     testFunction()
-  //
-  //     if (contextProps) {
-  //       console.log('entry context props here') // not called
-  //       if (contextProps.onShow && contextProps.onHoverTooltip) {
-  //         handleDelayedShow(contextProps.onShow, contextProps.onHoverTooltip);
-  //       }
-  //     }
-  //
-  //   },
-  //   onHoverEnd: () => {
-  //     console.log('I am going to stop hovering')
-  //
-  //     if (contextProps) {
-  //       console.log('exit context props here') // not called
-  //       if (contextProps.onShow) {
-  //         handleMouseOverOut(contextProps.onShow, event);
-  //       }
-  //     }
-  //
-  //   }
-  // });
-  //
-  // let testFunction = () => {
-  //   console.log('test', contextProps)
-  // }
 
   let onKeyDownTrigger = (e) => {
     if (triggerProps.ref && triggerProps.ref.current) {
@@ -128,7 +89,7 @@ export function useTooltipTrigger(props: TooltipTriggerProps): TooltipTriggerAri
     }
     if (visibleTooltips.length > 0 && hoveringOverTooltip === false) {
       console.log('exit function closing the tooltip')
-      // state.setOpen(false);
+      state.setOpen(false); // ... this is called before onMouseEnter & delayedHide
     }
     visibleTooltips.pop();
   };
@@ -154,7 +115,7 @@ export function useTooltipTrigger(props: TooltipTriggerProps): TooltipTriggerAri
       onHoverInteraction
     },
     hoverTriggerProps: {
-      //...hoverProps,
+      // ...hoverProps,
       onMouseEnter: enter,
       onMouseLeave: exit
     },
@@ -163,58 +124,3 @@ export function useTooltipTrigger(props: TooltipTriggerProps): TooltipTriggerAri
     }
   };
 }
-
-/*
-
-function handleDelayedShow(onShow, onHoverTooltip) {
-  if (hoverHideTimeout != null) {
-    clearTimeout(hoverHideTimeout);
-    hoverHideTimeout = null;
-  }
-  hoverShowTimeout = setTimeout(() => {
-    onShow(true);
-    if (onHoverTooltip) {
-      onHoverTooltip(true);
-    }
-  }, 300);
-}
-
-function handleDelayedHide(onShow) {
-  if (hoverShowTimeout != null) {
-    clearTimeout(hoverShowTimeout);
-    hoverShowTimeout = null;
-  }
-  hoverHideTimeout = setTimeout(() => {
-    onShow(false);
-  }, 300);
-}
-
-function handleMouseOverOut(onShow, e) {
-  const related = e.relatedTarget || e.nativeEvent.toElement;
-  const parent = related.parentNode;
-  if (parent.getAttribute('role') === 'tooltip') {
-    clearTimeout(hoverShowTimeout);
-    return;
-  } else {
-    handleDelayedHide(onShow);
-  }
-}
-
-// this doesn't work either ...
-export function handleDelayedShow2() {
-  let contextProps = useContext(HoverResponderContext);
-  if (hoverHideTimeout != null) {
-    clearTimeout(hoverHideTimeout);
-    hoverHideTimeout = null;
-  }
-  hoverShowTimeout = setTimeout(() => {
-    if(contextProps.onShow) {
-      contextProps.onShow(true);
-    }
-    if (contextProps.onHoverTooltip) {
-      contextProps.onHoverTooltip(true);
-    }
-  }, 300);
-}
-
-*/

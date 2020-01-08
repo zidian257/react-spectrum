@@ -59,6 +59,7 @@ export function useButton(props: AriaButtonProps, ref: RefObject<HTMLElement>): 
     ref
   });
 
+  // wrapping div around the button
   let {hoverProps} = useHover({
     onHoverStart,
     onHoverEnd,
@@ -67,6 +68,12 @@ export function useButton(props: AriaButtonProps, ref: RefObject<HTMLElement>): 
     isDisabled,
     ref
   });
+
+  /* in tooltip Trigger 
+    <Wrapper>
+      trigger
+    <Wrapper>
+  */
 
   let {focusableProps} = useFocusable(props, ref);
   let handlers = mergeProps(pressProps, focusableProps);

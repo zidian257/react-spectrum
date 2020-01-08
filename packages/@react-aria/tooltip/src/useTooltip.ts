@@ -34,9 +34,15 @@ export function useTooltip(props: TooltipProps): TooltipAria {
         contextProps.onHoverTooltip(false);
       }
     };
-    let onMouseEnter = () => {
+    let onMouseEnter = (e) => {
       console.log('on mouse enter from useTooltip');
-    }
+      // this is called before delayed hide so you have to block that method somehow
+          // something with context?
+          // otherLibrary.testFunction = function(){} & method overriding ... not an option since this happens first
+          // set a global boolean here ... using module.exports or localStorage is not acceptable 
+      console.log(e.target) // the tooltip
+      console.log(e.relatedTarget) // the story
+    };
     tooltipProps.onMouseLeave = onMouseLeave;
     tooltipProps.onMouseEnter = onMouseEnter;
   }

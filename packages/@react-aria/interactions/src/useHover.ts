@@ -146,7 +146,7 @@ export function useHover(props: HoverHookProps): HoverResult {
       };
     }
     return hoverProps;
-  }, [onHover, onHoverStart, onHoverEnd, onShow, isDisabled, onHoverTooltip]);
+  }, [onHover, onHoverStart, onShow, onHoverTooltip, onHoverEnd, isDisabled]);
 
   return {
     isHovering: isHoveringProp || isHovering,
@@ -154,7 +154,7 @@ export function useHover(props: HoverHookProps): HoverResult {
   };
 }
 
-// TODO: move tooltip specific functions to another file
+// moved tooltip specific functions to useTooltipTrigger in another branch 
 
 function handleDelayedShow(onShow, onHoverTooltip) {
   if (hoverHideTimeout != null) {
@@ -164,9 +164,10 @@ function handleDelayedShow(onShow, onHoverTooltip) {
   hoverShowTimeout = setTimeout(() => {
     console.log('delayed show')
     onShow(true);
-    if (onHoverTooltip) {
-      onHoverTooltip(true);
-    }
+                                // onHoverTooltip stuff here doesn't seem to be needed
+    // if (onHoverTooltip) {
+    //   onHoverTooltip(true);
+    // }
   }, 300);
 }
 
