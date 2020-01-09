@@ -36,8 +36,8 @@ describe('useHover', function () {
       );
 
       let el = res.getByText('test');
-      fireEvent.pointerEnter(el);
-      fireEvent.pointerLeave(el);
+      fireEvent(el, pointerEvent('pointerenter'));
+      fireEvent(el, pointerEvent('pointerleave'));
 
       console.log('events array from pointer ->', events) // still empty, maybe you need to set something defined to get past the if
                                                                 // check you have in useHover hook itself
@@ -64,9 +64,6 @@ describe('useHover', function () {
 
     });
 
-    it('should fire hover change events when moving pointer outside target', function () {
-
-    });
   });
 
   describe('mouse events', function () {
@@ -106,11 +103,21 @@ describe('useHover', function () {
 
   describe('touch events', function () {
     it('should not fire hover events based on touch events', function () {
+      let events = [];
+      let addEvent = (e) => events.push(e);
+      let res = render(
+        <Example
+          onHoverStart={addEvent}
+          onHoverEnd={addEvent}
+          onHover={addEvent} />
+      );
 
-    });
+      let el = res.getByText('test');
+      fireEvent.touchStart(el);
+      fireEvent.touchMove(el);
+      fireEvent.touchEnd(el);
 
-    it('should not fire hover change events when moving touch outside target', function () {
-
+      expect(events).toEqual([])
     });
   });
 

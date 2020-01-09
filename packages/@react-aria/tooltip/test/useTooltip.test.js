@@ -3,7 +3,7 @@ import React from 'react';
 import {renderHook} from 'react-hooks-testing-library';
 import {useTooltip} from '../';
 
-describe('useTooltip', function () {
+describe('useTooltip hook', function () {
   afterEach(cleanup);
 
   let renderTooltipHook = (props) => {
@@ -11,10 +11,14 @@ describe('useTooltip', function () {
     return result.current;
   };
 
-  it('handles defaults', function () {
+  it('with appropriate role', function () {
     let {tooltipProps} = renderTooltipHook({children: 'Test Tooltip'});
     expect(tooltipProps.role).toBe('tooltip');
   });
 
-  // add a test to check to make sure it has an id 
+  it('should have an id', function () {
+    let {tooltipProps} = renderTooltipHook({children: 'Test Tooltip'});
+    expect(tooltipProps.id).toBeTruthy();
+  });
+
 });
