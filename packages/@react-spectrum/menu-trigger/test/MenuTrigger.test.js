@@ -81,27 +81,27 @@ describe('MenuTrigger', function () {
     let menu = tree.getByRole('menu');
     expect(menu).toBeTruthy();
     expect(menu).toHaveAttribute('aria-labelledby', triggerButton.id);
-    
+
     let menuItem1 = within(menu).getByText('Foo');
     let menuItem2 = within(menu).getByText('Bar');
     let menuItem3 = within(menu).getByText('Baz');
     expect(menuItem1).toBeTruthy();
     expect(menuItem2).toBeTruthy();
     expect(menuItem3).toBeTruthy();
-  
+
     expect(triggerButton).toHaveAttribute('aria-expanded', 'true');
     expect(triggerButton).toHaveAttribute('aria-controls', menu.id);
-  
+
     if (Component === MenuTrigger) {
       expect(onOpenChange).toBeCalledTimes(1);
     } else {
       expect(onOpen).toBeCalledTimes(1);
       expect(onClose).toBeCalledTimes(0);
     }
-  
+
     triggerEvent(triggerButton);
-    expect(menu).not.toBeInTheDocument();  
-    
+    expect(menu).not.toBeInTheDocument();
+
     if (Component === MenuTrigger) {
       expect(triggerButton).toHaveAttribute('aria-expanded', 'false');
       expect(onOpenChange).toBeCalledTimes(2);
@@ -121,7 +121,7 @@ describe('MenuTrigger', function () {
     let triggerButton = tree.getByRole('button');
     expect(triggerButton).toBeTruthy();
     expect(triggerButton).toHaveAttribute('aria-haspopup', 'true');
-    
+
     let buttonText = within(triggerButton).getByText(triggerText);
     expect(buttonText).toBeTruthy();
 

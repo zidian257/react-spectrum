@@ -12,8 +12,6 @@ let theme = {
   medium: scaleMedium
 };
 
-// TODO: test hover trigger ... use button.addEventListener
-// TODO: test single tooltip concept
 describe('TooltipTrigger', function () {
   let onOpen = jest.fn();
   let onClose = jest.fn();
@@ -163,6 +161,10 @@ describe('TooltipTrigger', function () {
 
     });
 
+    // TODO: will need to add a test when you go back to other branch you worked on with Daniel to have the tooltip not go away
+        // when you are hovering over it
+              // fireEvent.mouseOver(tooltip)
+
   });
 
   describe('focus related tests', function () {
@@ -185,6 +187,10 @@ describe('TooltipTrigger', function () {
         expect(document.activeElement).toEqual(button));
       });
 
+      // 1st test:
+      // focus the button and then tooltip appears
+
+      // 2nd test:
       // focus the button and then escape button should work
       */
     });
@@ -193,15 +199,104 @@ describe('TooltipTrigger', function () {
 
   describe('single tooltip concept related tests', function () {
 
-    it('triggered by hover event', function () {
+    it('triggered by hover event', async function () {
+
+      let {getByText} = render(
+        <Provider theme={theme}>
+          <TooltipTrigger type="hover">
+            <ActionButton>TriggerOne</ActionButton>
+            <Tooltip>contentOne</Tooltip>
+          </TooltipTrigger>
+
+          <TooltipTrigger type="hover">
+            <ActionButton>TriggerTwo</ActionButton>
+            <Tooltip>contentTwo</Tooltip>
+          </TooltipTrigger>
+        </Provider>
+      );
+
+      expect(() => {
+        getByRole('tooltip');
+      }).toThrow();
+
+      let buttonOne = getByText('TriggerOne');
+      fireEvent.mouseOver(buttonOne);
+
+      await new Promise((r) => setTimeout(r, 400));
+
+      let tooltipOne = getByText('contentOne');
+      expect(tooltipOne).toBeInTheDocument();
+
+      fireEvent.mouseOut(buttonOne);
+
+      let buttonTwo = getByText('TriggerTwo');
+      fireEvent.mouseOver(buttonTwo);
+
+      await new Promise((r) => setTimeout(r, 400));
+
+      expect(tooltipOne).not.toBeInTheDocument();
+
+      let tooltipTwo = getByText('contentTwo')
+      expect(tooltipTwo).toBeInTheDocument();
+
 
     });
 
-    it('triggered by click event', function () {
+    it('triggered by click event', async function () {  // use the within keyword?
+
+      let {getByText} = render(
+        <Provider theme={theme}>
+          <TooltipTrigger type="click">
+            <ActionButton>TriggerOne</ActionButton>
+            <Tooltip>contentOne</Tooltip>
+          </TooltipTrigger>
+
+          <TooltipTrigger type="click">
+            <ActionButton>TriggerTwo</ActionButton>
+            <Tooltip>contentTwo</Tooltip>
+          </TooltipTrigger>
+        </Provider>
+      );
+
+      expect(() => {
+        getByRole('tooltip');
+      }).toThrow();
+
+      let buttonOne = getByText('TriggerOne');
+      fireEvent.click(buttonOne);
+
+      await new Promise((r) => setTimeout(r, 400));
+
+      let tooltipOne = getByText('contentOne');
+      expect(tooltipOne).toBeVisible();
+
+      let buttonTwo = getByText('TriggerTwo');
+      fireEvent.click(buttonTwo);
+
+      await new Promise((r) => setTimeout(r, 400));
+
+      let tooltipTwo = getByText('contentTwo');
+      expect(tooltipTwo).toBeVisible();
+
+      expect(tooltipOne).not.toBeVisible();
 
     });
 
     it('triggered by hover and click events', function () {
+
+      let {getByText} = render(
+        <Provider theme={theme}>
+          <TooltipTrigger type="hover">
+            <ActionButton>TriggerOne</ActionButton>
+            <Tooltip>contentOne</Tooltip>
+          </TooltipTrigger>
+
+          <TooltipTrigger type="click">
+            <ActionButton>TriggerTwo</ActionButton>
+            <Tooltip>contentTwo</Tooltip>
+          </TooltipTrigger>
+        </Provider>
+      );
 
     });
 
