@@ -82,11 +82,6 @@ export function useTooltipTrigger(props: TooltipTriggerProps): TooltipTriggerAri
   let exit = (e) => {
     console.log('exit function called')
     let hoveringOverTooltip = false;
-    const related = e.relatedTarget || e.nativeEvent.toElement;
-    const parent = related.parentNode;
-    if (parent.getAttribute('role') === 'tooltip') {
-      hoveringOverTooltip = true;
-    }
     if (visibleTooltips.length > 0 && hoveringOverTooltip === false) {
       console.log('exit function closing the tooltip')
       state.setOpen(false); // ... this is called before onMouseEnter & delayedHide

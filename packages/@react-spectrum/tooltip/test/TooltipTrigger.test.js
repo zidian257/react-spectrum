@@ -1,5 +1,5 @@
 import {ActionButton} from '@react-spectrum/button';
-import {cleanup, fireEvent, render, wait, waitForDomChange} from '@testing-library/react';
+import {cleanup, fireEvent, render, wait, waitForDomChange, within} from '@testing-library/react';
 import {Provider} from '@react-spectrum/provider';
 import React from 'react';
 import scaleMedium from '@adobe/spectrum-css-temp/vars/spectrum-medium-unique.css';
@@ -104,11 +104,13 @@ describe('TooltipTrigger', function () {
 
   describe('hover related tests', function () {
 
-    it('triggered by hover event', function () {
-      /*
+    it('triggered by hover event', async function () {
+
+      /* I was suprised none of this worked
+
       let {getByRole} = render(
         <Provider theme={theme}>
-          <TooltipTrigger type="click">
+          <TooltipTrigger type="hover">
             <ActionButton>Trigger</ActionButton>
             <Tooltip>content</Tooltip>
           </TooltipTrigger>
@@ -116,7 +118,49 @@ describe('TooltipTrigger', function () {
       );
 
       let button = getByRole('button');
+      fireEvent.mouseEnter(button);
+      fireEvent.mouseOver(button);
+
+      // let tooltip = getByRole('tooltip');
+      // let tooltip = getByText('content');
+
+      await waitForDomChange();
+      //expect(tooltip).toBeInTheDocument();
+
+      // wait for appearance
+      // await wait(() => {
+      //   expect(tooltip).toBeInTheDocument();
+      // });
+
       */
+
+      let {getByText} = render(
+        <Provider theme={theme}>
+          <TooltipTrigger type="hover">
+            <ActionButton>Trigger</ActionButton>
+            <Tooltip>content</Tooltip>
+          </TooltipTrigger>
+        </Provider>
+      );
+
+      expect(() => {
+        getByRole('tooltip');
+      }).toThrow();
+
+      let button = getByText('Trigger');
+      fireEvent.mouseOver(button);
+
+      await new Promise((r) => setTimeout(r, 400));
+
+      let tooltip = getByText('content')
+      expect(tooltip).toBeInTheDocument();
+
+      fireEvent.mouseOut(button);
+
+      await new Promise((r) => setTimeout(r, 400));
+
+      expect(tooltip).not.toBeInTheDocument();
+
     });
 
   });
@@ -150,6 +194,14 @@ describe('TooltipTrigger', function () {
   describe('single tooltip concept related tests', function () {
 
     it('triggered by hover event', function () {
+
+    });
+
+    it('triggered by click event', function () {
+
+    });
+
+    it('triggered by hover and click events', function () {
 
     });
 

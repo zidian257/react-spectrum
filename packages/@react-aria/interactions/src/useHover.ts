@@ -121,7 +121,7 @@ export function useHover(props: HoverHookProps): HoverResult {
       setHover(false);
 
       if (onShow) {
-        handleMouseOverOut(onShow, event);
+        handleDelayedHide(onShow)
       }
     };
 
@@ -154,7 +154,7 @@ export function useHover(props: HoverHookProps): HoverResult {
   };
 }
 
-// moved tooltip specific functions to useTooltipTrigger in another branch 
+// moved tooltip specific functions to useTooltipTrigger in another branch
 
 function handleDelayedShow(onShow, onHoverTooltip) {
   if (hoverHideTimeout != null) {
