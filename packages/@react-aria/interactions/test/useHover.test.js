@@ -36,11 +36,11 @@ describe('useHover', function () {
       );
 
       let el = res.getByText('test');
-      fireEvent(el, pointerEvent('pointerenter'));
-      fireEvent(el, pointerEvent('pointerleave'));
+      fireEvent.pointerEnter(el);
+      fireEvent.pointerLeave(el);
 
       console.log('events array from pointer ->', events) // still empty, maybe you need to set something defined to get past the if
-                                                                // check you have in useHover hook itself 
+                                                                // check you have in useHover hook itself
 
       /*
       expect(events).toEqual([
@@ -84,12 +84,23 @@ describe('useHover', function () {
       fireEvent.mouseEnter(el);
       fireEvent.mouseLeave(el);
 
-      console.log('events array from mouse ->', events)  // this has stuff in it!!!!! You can do the check!!
-
-    });
-
-    it('should fire hover change events when moving mouse outside target', function () {
-
+      expect(events).toEqual([
+        {
+          type: 'hoverstart',
+          target: el,
+          pointerType: 'mouse',
+        },
+        {
+          type: 'hover',
+          target: el,
+          pointerType: 'mouse',
+        },
+        {
+          type: 'hoverend',
+          target: el,
+          pointerType: 'mouse',
+        }
+      ]);
     });
   });
 
