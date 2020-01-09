@@ -105,6 +105,51 @@ describe('TooltipTrigger', function () {
   describe('hover related tests', function () {
 
     it('triggered by hover event', function () {
+      /*
+      let {getByRole} = render(
+        <Provider theme={theme}>
+          <TooltipTrigger type="click">
+            <ActionButton>Trigger</ActionButton>
+            <Tooltip>content</Tooltip>
+          </TooltipTrigger>
+        </Provider>
+      );
+
+      let button = getByRole('button');
+      */
+    });
+
+  });
+
+  describe('focus related tests', function () {
+
+    it('triggered by focus event', async function () {
+      /*
+      let {getByRole} = render(
+        <Provider theme={theme}>
+          <TooltipTrigger type="click">
+            <ActionButton>Trigger</ActionButton>
+            <Tooltip>content</Tooltip>
+          </TooltipTrigger>
+        </Provider>
+      );
+
+      let button = getByRole('button');
+      fireEvent.focus(button);
+
+      await wait(() => {
+        expect(document.activeElement).toEqual(button));
+      });
+
+      // focus the button and then escape button should work
+      */
+    });
+
+  });
+
+  describe('single tooltip concept related tests', function () {
+
+    it('triggered by hover event', function () {
 
     });
 
