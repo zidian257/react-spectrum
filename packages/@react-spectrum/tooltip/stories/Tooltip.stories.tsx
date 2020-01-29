@@ -47,14 +47,17 @@ storiesOf('Tooltip', module)
     'triggered by click, placement: right',
     () => renderWithTrigger('This is a tooltip.', {placement: 'end', type: 'click'})
   ).add(
-    'triggered by click, placement: top',
-    () => renderWithTrigger('This is a tooltip.', {placement: 'top', type: 'click'})
+    'triggered by hover, placement: top',
+    () => renderWithTrigger('This is a tooltip.', {placement: 'top', type: 'hover'})
   ).add(
-    'triggered by click, placement: bottom',
-    () => renderWithTrigger('This is a tooltip.', {placement: 'bottom', type: 'click'})
+    'triggered by hover, placement: bottom',
+    () => renderWithTrigger('This is a tooltip.', {placement: 'bottom', type: 'hover'})
   ).add(
-    'isDisabled: true',
+    'supports disable prop: click',
     () => renderWithTrigger('This is a tooltip.', {placement: 'left', type: 'click', isDisabled: true})
+  ).add(
+    'supports disable prop: hover',
+    () => renderWithTrigger('This is a tooltip.', {placement: 'left', type: 'hover', isDisabled: true})
   );
 
 function render(content, props = {}) {

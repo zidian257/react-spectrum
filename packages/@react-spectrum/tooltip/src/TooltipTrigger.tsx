@@ -65,5 +65,17 @@ export function TooltipTrigger(props: TooltipTriggerProps) {
         {overlay}
       </Fragment>
     );
+  } else if (type === 'hover') {
+    return (
+      <Fragment>
+        <DOMPropsResponder
+          {...triggerProps}
+          ref={triggerRef}
+          isDisabled={isDisabled}>
+          {trigger}
+        </DOMPropsResponder>
+          {overlay}
+      </Fragment>
+    )
   }
 }
