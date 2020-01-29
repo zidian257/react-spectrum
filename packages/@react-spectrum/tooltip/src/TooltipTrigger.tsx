@@ -1,6 +1,6 @@
+import {DOMPropsResponder, PressResponder} from '@react-aria/interactions';
 import {DOMRefValue} from '@react-types/shared';
 import {Overlay} from '@react-spectrum/overlays';
-import {PressResponder} from '@react-aria/interactions';
 import React, {Fragment, useRef} from 'react';
 import {TooltipTriggerProps} from '@react-types/tooltip';
 import {unwrapDOMRef} from '@react-spectrum/utils';
@@ -25,13 +25,14 @@ export function TooltipTrigger(props: TooltipTriggerProps) {
   let triggerRef = useRef<HTMLElement>();
   let overlayRef = useRef<HTMLDivElement>();
 
-  let {triggerProps, tooltipProps} = useTooltipTrigger({
+  let {triggerProps, tooltipProps, hoverTriggerProps} = useTooltipTrigger({
     tooltipProps: content.props,
     triggerProps: {
       ...trigger.props,
       ref: triggerRef
     },
     state,
+    isDisabled,
     type
   });
 

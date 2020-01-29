@@ -1,8 +1,9 @@
 import {ButtonProps} from '@react-types/button';
 import {chain, mergeProps} from '@react-aria/utils';
-import {RefObject} from 'react';
+import {DOMPropsResponderContext} from '@react-aria/interactions';
+import {RefObject, useContext} from 'react';
+import {useDOMPropsResponderContext, usePress} from '@react-aria/interactions';
 import {useFocusable} from '@react-aria/focus';
-import {usePress} from '@react-aria/interactions';
 
 interface AriaButtonProps extends ButtonProps {
   isSelected?: boolean,
@@ -55,12 +56,17 @@ export function useButton(props: AriaButtonProps, ref: RefObject<HTMLElement>): 
     ref
   });
 
+  // pull out the following two lines into a seperate function called useDOMPropsResponder
+  useDOMPropsResponderContext({ref});
+  let contextProps = useContext(DOMPropsResponderContext) || {};
+
   let {focusableProps} = useFocusable(props, ref);
   let handlers = mergeProps(pressProps, focusableProps);
+  let interactions = mergeProps(contextProps, handlers);
 
   return {
     isPressed, // Used to indicate press state for visual
-    buttonProps: mergeProps(handlers, {
+    buttonProps: mergeProps(interactions, {
       'aria-haspopup': ariaHasPopup,
       'aria-expanded': ariaExpanded || (ariaHasPopup && isSelected),
       'aria-invalid': validationState === 'invalid' ? true : null,
