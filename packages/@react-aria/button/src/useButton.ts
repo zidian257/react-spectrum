@@ -1,6 +1,6 @@
 import {ButtonProps} from '@react-types/button';
 import {chain, mergeProps} from '@react-aria/utils';
-import {RefObject} from 'react';
+import React, {RefObject} from 'react';
 import {useFocusable} from '@react-aria/focus';
 import {usePress} from '@react-aria/interactions';
 
