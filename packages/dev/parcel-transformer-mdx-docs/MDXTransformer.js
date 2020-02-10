@@ -57,15 +57,27 @@ import ReactDOM from 'react-dom';
 import {Provider} from '@react-spectrum/provider';
 import {theme} from '@react-spectrum/theme-default';
 ${exampleCode.join('\n')}
+export default {};
 `;
 
     // Ensure that the HTML asset always changes so that the packager runs
     let random = Math.random().toString(36).slice(4);
+
+    asset.type = 'html';
+    asset.setCode(random);
+    if (exampleBundle) {
+      asset.addDependency({
+        moduleSpecifier: 'example',
+        isAsync: true
+      });
+    }
+
+    asset.addDependency({
+      moduleSpecifier: 'page'
+    });
+    
     let assets = [
-      {
-        type: 'html',
-        code: exampleBundle ? `${random}<script src="example"></script>` : random
-      },
+      asset,
       {
         type: 'jsx',
         code: `/* @jsx mdx */
@@ -81,7 +93,10 @@ ${compiled}
           includeNodeModules: {
             react: false
           }
-        }
+        },
+        meta: {
+          splittable: false
+        }  
       }
     ];
 
@@ -89,7 +104,10 @@ ${compiled}
       assets.push({
         type: 'jsx',
         code: exampleBundle,
-        uniqueKey: 'example'
+        uniqueKey: 'example',
+        env: {
+          outputFormat: 'esmodule'
+        }
       });
     }
 

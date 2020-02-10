@@ -30,7 +30,9 @@ module.exports = new Packager({
       return p.concat(bundles);
     }, []);
 
-    bundles = bundles.concat(bundleGraph.getSiblingBundles(bundle).filter(b => !b.isInline));
+    bundles = [...new Map(bundles.map(b => [b.id, b])).values()];
+
+    // bundles = bundles.concat(bundleGraph.getSiblingBundles(bundle).filter(b => !b.isInline));
     bundles.reverse();
 
     let pages = [];
@@ -42,8 +44,8 @@ module.exports = new Packager({
 
     let code = ReactDOMServer.renderToStaticMarkup(
       React.createElement(Component, {
-        scripts: bundles.filter(b => b.type === 'js').map(b => ({
-          type: b.outputFormat === 'esmodule' ? 'module' : undefined,
+        scripts: bundles.filter(b => b.type === 'js' && !b.isInline).map(b => ({
+          type: b.env.outputFormat === 'esmodule' ? 'module' : undefined,
           url: '/' + b.name
         })),
         styles: bundles.filter(b => b.type === 'css').map(b => ({

@@ -31,10 +31,10 @@ export function Layout({scripts, styles, pages, currentPage, children}) {
         <meta charset="utf-8" />
         <script src="https://use.typekit.net/pbi5ojv.js" />
         {styles.map(s => <link rel="stylesheet" href={s.url} />)}
-        {scripts.map(s => <link rel="preload" as="script" href={s.url} />)}
+        {scripts.map(s => <link rel="preload" as="script" href={s.url} crossOrigin="" />)}
       </head>
       <body>
-        <Provider theme={theme} colorScheme="light" scale="medium" UNSAFE_className={classNames(docStyles.provider, highlightCss.spectrum)}>
+        <Provider theme={theme} colorScheme="dark" scale="medium" UNSAFE_className={classNames(docStyles.provider, highlightCss.spectrum)}>
           <nav className={docStyles.nav}>
             <header>
               <a href="/">
