@@ -64,6 +64,21 @@ matches the value prop passed to the radio button.
 </RadioGroup>
 ```
 
+### Controlled
+
+Prevent users from toggling between different options.
+
+```tsx example
+<RadioGroup label="Example Options" value="dragon">
+ <Radio value="wizard">
+   Wizard
+ </Radio>
+ <Radio value="dragon">
+   Dragon
+ </Radio>
+</RadioGroup>
+```
+
 ## Labeling
 
 When a visible label isn't being used an `aria-label` prop is needed to explicitly set the accessibility name for the radio button group.
@@ -108,7 +123,6 @@ function Example() {
     </div>
   );
 }
-
 ```
 
 ## Validation
