@@ -10,7 +10,7 @@ import {useLabels} from '@react-aria/utils';
 import {useMessageFormatter} from '@react-aria/i18n';
 
 interface DateRangePickerAria {
-  comboboxProps: HTMLAttributes<HTMLElement>,
+  groupProps: HTMLAttributes<HTMLElement>,
   startFieldProps: DOMProps,
   endFieldProps: DOMProps,
   buttonProps: HTMLAttributes<HTMLElement>,
@@ -19,7 +19,7 @@ interface DateRangePickerAria {
 
 export function useDateRangePicker(props: DateRangePickerProps & DOMProps, state: DateRangePickerState): DateRangePickerAria {
   let formatMessage = useMessageFormatter(intlMessages);
-  let {comboboxProps, buttonProps, fieldProps, dialogProps} = useDatePicker({
+  let {groupProps, buttonProps, fieldProps, dialogProps} = useDatePicker({
     ...props,
     ...useLabels(props, formatMessage('dateRange'))
   }, state);
@@ -35,7 +35,7 @@ export function useDateRangePicker(props: DateRangePickerProps & DOMProps, state
   });
 
   return {
-    comboboxProps,
+    groupProps,
     buttonProps,
     dialogProps,
     startFieldProps,

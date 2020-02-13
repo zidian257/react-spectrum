@@ -33,7 +33,8 @@
   -webkit-user-select: none;
 }
 
-.react-spectrum-DatePicker-cell:focus {
+/*  Need to change this back to focus and hook up FocusWithin */
+.react-spectrum-DatePicker-cell:focus-within {
   background: rgba(38, 128, 235, 0.25);
   outline: none;
 }

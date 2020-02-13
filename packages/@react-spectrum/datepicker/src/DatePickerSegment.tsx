@@ -5,6 +5,8 @@ import {SpectrumDatePickerProps} from '@react-types/datepicker';
 import styles from './index.css';
 import {useDateSegment} from '@react-aria/datepicker';
 import {useFocusManager} from '@react-aria/focus';
+import {VisuallyHidden} from '@react-aria/visually-hidden';
+
 
 interface DatePickerSegmentProps extends SpectrumDatePickerProps {
   segment: DateSegment,
@@ -58,11 +60,20 @@ function LiteralSegment({segment, isPlaceholder}: LiteralSegmentProps) {
 function EditableSegment({segment, state, ...otherProps}: DatePickerSegmentProps) {
   let {segmentProps} = useDateSegment(otherProps, segment, state);
   return (
-    <div
-      className={classNames(styles, 'react-spectrum-DatePicker-cell', {'is-placeholder': segment.isPlaceholder})}
-      data-testid={segment.type}
-      {...segmentProps}>
-      {segment.text}
-    </div>
+      <div
+        className={classNames(styles, 'react-spectrum-DatePicker-cell', {'is-placeholder': segment.isPlaceholder})}
+        data-testid={segment.type}
+        {...segmentProps}
+        role="none">
+        <span 
+          aria-hidden="true">{segment.text}</span>
+        <VisuallyHidden>
+          <input
+          placeholder={segment.isPlaceholder ? segment.text : undefined}
+          {...segmentProps} 
+          role="textbox"
+          />
+        </VisuallyHidden>
+      </div>
   );
 }

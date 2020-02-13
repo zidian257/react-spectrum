@@ -29,7 +29,7 @@ export function DatePicker(props: SpectrumDatePickerProps) {
   } = props;
   let {styleProps} = useStyleProps(otherProps);
   let state = useDatePickerState(props);
-  let {comboboxProps, fieldProps, buttonProps, dialogProps} = useDatePicker(props, state);
+  let {groupProps, fieldProps, buttonProps, dialogProps} = useDatePicker(props, state);
   let {value, setValue, selectDate, isOpen, setOpen} = state;
   let targetRef = useRef<HTMLDivElement>();
   let {direction} = useLocale();
@@ -54,7 +54,7 @@ export function DatePicker(props: SpectrumDatePickerProps) {
       <div
         {...filterDOMProps(otherProps)}
         {...styleProps}
-        {...comboboxProps}
+        {...groupProps}
         className={className}
         ref={targetRef}>
         <FocusScope autoFocus={autoFocus}>

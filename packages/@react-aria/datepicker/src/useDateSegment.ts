@@ -7,6 +7,7 @@ import intlMessages from '../intl/*.json';
 import {mergeProps, useId} from '@react-aria/utils';
 import {useDateFormatter, useLocale, useMessageFormatter} from '@react-aria/i18n';
 import {useFocusManager} from '@react-aria/focus';
+import {useFocusWithin} from '@react-aria/interactions';
 import {useSpinButton} from '@react-aria/spinbutton';
 
 interface DateSegmentAria {
@@ -24,6 +25,12 @@ export function useDateSegment(props: DatePickerProps & DOMProps, segment: DateS
   let hourDateFormatter = useDateFormatter({
     hour: 'numeric',
     hour12: state.dateFormatter.resolvedOptions().hour12
+  });
+
+  // Not hooked up yet
+  let [isFocusWithin, setFocusWithin] = useState(false);
+  let {focusWithinProps} = useFocusWithin({
+    onFocusWithinChange: setFocusWithin
   });
 
   if (segment.type === 'month') {
@@ -151,7 +158,6 @@ export function useDateSegment(props: DatePickerProps & DOMProps, segment: DateS
       id,
       'aria-label': messageFormatter(segment.type),
       'aria-labelledby': `${props['aria-labelledby']} ${id}`,
-      tabIndex: props.isDisabled ? undefined : 0,
       onKeyDown,
       onFocus,
       onMouseDown: (e: MouseEvent) => e.stopPropagation()
