@@ -17,5 +17,5 @@ interface SpectrumDatePickerBase extends SpectrumLabelableProps, DOMProps, Style
   isQuiet?: boolean
 }
 
-export interface SpectrumDatePickerProps extends DatePickerProps, SpectrumDatePickerBase {}
+export interface SpectrumDatePickerProps extends DatePickerProps, DOMProps, SpectrumDatePickerBase {}
 export interface SpectrumDateRangePickerProps extends DateRangePickerProps, SpectrumDatePickerBase {}

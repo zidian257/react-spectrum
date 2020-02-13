@@ -6,12 +6,14 @@ import {HTMLAttributes, KeyboardEvent} from 'react';
 import intlMessages from '../intl/*.json';
 import {mergeProps, useId, useLabels} from '@react-aria/utils';
 import {SpectrumBaseDialogProps} from '@react-types/dialog';
-import {useMessageFormatter} from '@react-aria/i18n';
+import {useDateFormatter, useMessageFormatter} from '@react-aria/i18n';
+import {useMemo} from 'react';
 import {usePress} from '@react-aria/interactions';
 
 interface DatePickerAria {
-  comboboxProps: HTMLAttributes<HTMLElement>,
-  fieldProps: DOMProps,
+  groupProps: HTMLAttributes<HTMLElement>,
+  fieldProps: HTMLAttributes<HTMLElement>,
+  fieldGroupProps: HTMLAttributes<HTMLElement>,
   buttonProps: HTMLAttributes<HTMLElement>,
   dialogProps: SpectrumBaseDialogProps
 }
@@ -21,9 +23,14 @@ type DatePickerAriaProps = (DatePickerProps | DateRangePickerProps) & DOMProps;
 export function useDatePicker(props: DatePickerAriaProps, state: DatePickerState | DateRangePickerState): DatePickerAria {
   let buttonId = useId();
   let dialogId = useId();
+  let fieldGroupId = useId();
   let formatMessage = useMessageFormatter(intlMessages);
   let labels = useLabels(props, formatMessage('date'));
   let labelledBy = labels['aria-labelledby'] || labels.id;
+  let dateValue = useMemo(
+    () => state.value ? formatMessage('currentDate', {date: state.value}) : '',
+    [formatMessage, state.value]
+  );
 
   // When a touch event occurs on the date field, open the calendar instead.
   // The date segments are too small to interact with on a touch device.
@@ -47,23 +54,23 @@ export function useDatePicker(props: DatePickerAriaProps, state: DatePickerState
   };
 
   return {
-    comboboxProps: {
-      role: 'combobox',
-      'aria-haspopup': 'dialog',
-      'aria-expanded': state.isOpen,
-      'aria-owns': state.isOpen ? dialogId : null,
-      'aria-invalid': state.validationState === 'invalid' || null,
+    groupProps: {
+      role: 'group',
       'aria-disabled': props.isDisabled || null,
-      'aria-readonly': props.isReadOnly || null,
-      'aria-required': props.isRequired || null,
       ...mergeProps(pressProps, {onKeyDown}),
-      ...labels
+      ...labels,
+      'title': dateValue
+    },
+    fieldGroupProps: {
+      id: fieldGroupId
     },
     fieldProps: {
-      'aria-labelledby': labelledBy
+      'aria-labelledby': labelledBy,
+      'aria-invalid': state.validationState === 'invalid' || null,
+      'aria-readonly': props.isReadOnly || null,
+      'aria-required': props.isRequired || null
     },
     buttonProps: {
-      tabIndex: -1,
       id: buttonId,
       'aria-haspopup': 'dialog',
       'aria-label': formatMessage('calendar'),
