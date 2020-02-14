@@ -1,4 +1,5 @@
 import {getDoc} from 'globals-docs';
+import Markdown from 'markdown-to-jsx';
 import React, {useContext} from 'react';
 import styles from './docs.css';
 import tableStyles from '@adobe/spectrum-css-temp/components/table/vars.css';
@@ -188,6 +189,16 @@ function LinkType({id}) {
   return <a href={'#' + id} data-link={id} className={`${styles.colorLink} token hljs-name`}>{value.name}</a>;
 }
 
+function renderHTMLfromMarkdown(description) {
+  if (description) {
+    console.log(description);
+    // return <Markdown> description </Markdown>       ... this placed 'description' on the screen
+    return {__html: <Markdown> description </Markdown>}; // this puts [object Object] on the screen
+  } else {
+    console.log("bye") // appears in the terminal, not the website
+  }
+}
+
 export function InterfaceType({properties}) {
   return (
     <table className={`${tableStyles['spectrum-Table']} ${tableStyles['spectrum-Table--quiet']} ${styles.propTable}`}>
@@ -207,7 +218,7 @@ export function InterfaceType({properties}) {
             <td className={tableStyles['spectrum-Table-cell']}><code className={typographyStyles['spectrum-Code4']}><Type type={prop.value} /></code></td>
             <td className={tableStyles['spectrum-Table-cell']} style={{textAlign: prop.default ? undefined : 'center'}}>{prop.default || '–'}</td>
             <td className={tableStyles['spectrum-Table-cell']}>{!prop.optional ? 'true' : null}</td>
-            <td className={tableStyles['spectrum-Table-cell']}>{prop.description}</td>
+            <td className={tableStyles['spectrum-Table-cell']}><div dangerouslySetInnerHTML={renderHTMLfromMarkdown(prop.description)}/></td>
           </tr>
         ))}
       </tbody>
