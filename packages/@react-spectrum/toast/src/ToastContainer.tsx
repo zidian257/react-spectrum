@@ -16,32 +16,44 @@ import {Toast} from './';
 import toastContainerStyles from './toastContainer.css';
 import {ToastState} from '@react-types/toast';
 import {useProvider} from '@react-spectrum/provider';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+import CSSTransition from 'react-transition-group/CSSTransition';
 
 export function ToastContainer(props: ToastState): ReactElement {
   let {
     onRemove,
-    toasts,
-    ...otherProps
+    toasts
   } = props;
   let providerProps = useProvider();
-  let toastPlacement = providerProps && providerProps.toastPlacement && providerProps.toastPlacement.split(' ');
+
+  let toastPlacement = providerProps && providerProps.toastPlacement && "top".split(' ');
   let containerPosition = toastPlacement && toastPlacement[0];
   let containerPlacement = toastPlacement && toastPlacement[1];
 
+  let classes = {
+    appear: classNames(toastContainerStyles, `react-spectrum-Toast-slide-${containerPosition}-appear`),
+    appearActive: classNames(toastContainerStyles, `react-spectrum-Toast-slide-${containerPosition}-appear-active`),
+    enter: classNames(toastContainerStyles,`react-spectrum-Toast-slide-${containerPosition}-enter`),
+    enterActive: classNames(toastContainerStyles, `react-spectrum-Toast-slide-${containerPosition}-enter-active`),
+    exit: classNames(toastContainerStyles, `react-spectrum-Toast-slide-${containerPosition}-exit`),
+    exitActive: classNames(toastContainerStyles, `react-spectrum-Toast-slide-${containerPosition}-exit-active`),
+  };
+
   let renderToasts = () => toasts.map((toast) =>
-    (<Toast
-      {...toast.props}
-      key={toast.props.toastKey}
-      onRemove={onRemove}
-      timer={toast.timer}>
-      {toast.content}
-    </Toast>)
+    (
+      <CSSTransition key={toast.props.toastKey} classNames={classes} timeout={200}>
+        <Toast
+          {...toast.props}
+          onRemove={onRemove}
+          timer={toast.timer}>
+          {toast.content}
+        </Toast>
+      </CSSTransition>
+    )
   );
 
-
   return (
-    <div
-      {...filterDOMProps(otherProps)}
+    <TransitionGroup
       className={classNames(
         toastContainerStyles,
         'react-spectrum-ToastContainer',
@@ -49,6 +61,6 @@ export function ToastContainer(props: ToastState): ReactElement {
         containerPlacement && `react-spectrum-ToastContainer--${containerPlacement}`
       )}>
       {renderToasts()}
-    </div>
+    </TransitionGroup>
   );
 }

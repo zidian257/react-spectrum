@@ -12,21 +12,35 @@
 
 import {ReactNode, useRef, useState} from 'react';
 import {Timer} from './';
-import {ToastProps, ToastState, ToastStateValue} from '@react-types/toast';
+import {ToastOptions} from '@react-types/toast';
 
-interface ToastStateProps {
-  value?: ToastStateValue[]
+
+// Is this needed?
+interface ToastStateProps extends ToastOptions{
+  variant?: 'positive' | 'negative' | 'info'
 }
 
-const TOAST_TIMEOUT = 5000;
+// Object used to store a Toast in state
+interface ToastStateValue {
+  content: ReactNode,
+  props: ToastStateProps,
+  timer: any
+}
 
-export function useToastState(props?: ToastStateProps): ToastState {
-  const [toasts, setToasts] = useState(props && props.value || []);
-  const toastsRef = useRef(toasts);
-  toastsRef.current = toasts;
 
-  const onAdd = (content: ReactNode, options: ToastProps) => {
-    let tempToasts = [...toasts];
+interface ToastState {
+  add?: (content: ReactNode, options: ToastStateProps) => void,
+  remove?: (toastKey: string) => void,
+  setToasts?: (value: any) => void,
+  toasts?: ToastStateValue[]
+}
+
+const TOAST_TIMEOUT = 9000;
+
+export function useToastState(props?: any): ToastState {
+  let [toasts, setToasts] = useState(props && props.value || []);
+
+  const add = (content: ReactNode, options: ToastStateProps) => {
     let timer;
 
     // set timer to remove toasts
@@ -34,32 +48,30 @@ export function useToastState(props?: ToastStateProps): ToastState {
       if (options.timeout < 0) {
         options.timeout = TOAST_TIMEOUT;
       }
-      timer = new Timer(() => onRemove(options.toastKey), options.timeout || TOAST_TIMEOUT);
+      console.log("timer being set", options)
+      timer = new Timer(() => remove(options.toastKey), options.timeout || TOAST_TIMEOUT);
     }
 
-    tempToasts.push({
+    let newToast = {
       content,
       props: options,
       timer
-    });
-    setToasts(tempToasts);
-
-
+    };
+    setToasts(prevToasts => [...prevToasts, newToast]);
   };
 
-  const onRemove = (toastKey: string) => {
-    let tempToasts = [...toastsRef.current].filter(item => {
+  const remove = (toastKey: string) => {
+    setToasts(prevToasts => [...prevToasts].filter(item => {
       if (item.props.toastKey === toastKey && item.timer) {
         item.timer.clear();
       }
       return item.props.toastKey !== toastKey;
-    });
-    setToasts(tempToasts);
+    }));
   };
 
   return {
-    onAdd,
-    onRemove,
+    add,
+    remove,
     setToasts,
     toasts
   };

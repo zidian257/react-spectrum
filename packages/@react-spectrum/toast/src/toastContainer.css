@@ -12,13 +12,12 @@
 
 .react-spectrum-ToastContainer {
   position: fixed;
-  top: unset;
-  bottom: 0;
-  inset-inline-start: 0;
-  inset-inline-end: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 100050; /* above modals */
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   align-items: center;
   pointer-events: none;
 
@@ -29,11 +28,10 @@
 }
 .react-spectrum-ToastContainer--top {
   top: 0;
-  flex-direction: column;
-  bottom: unset;
 }
 .react-spectrum-ToastContainer--bottom {
   flex-direction: column-reverse;
+  top: unset;
   bottom: 0;
 }
 .react-spectrum-ToastContainer--left {
@@ -44,4 +42,54 @@
 }
 .react-spectrum-ToastContainer--right {
   align-items: flex-end;
+}
+
+.react-spectrum-Toast-slide-top-enter, .react-spectrum-Toast-slide-top-appear {
+  opacity: 0;
+  transform: translate3d(0, -100%, 0);
+}
+
+.react-spectrum-Toast-slide-top-enter-active, .react-spectrum-Toast-slide-top-appear-active {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition: all 200ms;
+  transition-timing-function: cubic-bezier(0.175, 0.885, 0.320, 1.275);
+}
+
+.react-spectrum-Toast-slide-top-exit {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.the-class {
+  border: 10px;
+}
+
+.react-spectrum-Toast-slide-top-exit-active {
+  opacity: 0;
+  transform: translate3d(0, -100%, 0);
+  transition: all 200ms ease-in-out;
+}
+
+.react-spectrum-Toast-slide-bottom-enter, .react-spectrum-Toast-slide-bottom-enter-appear {
+  opacity: 0;
+  transform: translate3d(0, 100%, 0);
+}
+
+.react-spectrum-Toast-slide-bottom-enter-active, .react-spectrum-Toast-slide-bottom-appear-active {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition: all $spectrum-global-animation-transition-time;
+  transition-timing-function: cubic-bezier(0.175, 0.885, 0.320, 1.275);
+}
+
+.react-spectrum-Toast-slide-bottom-exit {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.react-spectrum-Toast-slide-bottom-exit-active {
+  opacity: 0;
+  transform: translate3d(0, 100%, 0);
+  transition: all $spectrum-global-animation-transition-time ease-in-out;
 }

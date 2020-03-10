@@ -64,7 +64,7 @@ function RenderProvider() {
   return (
     <div>
       <Button
-        onPress={() => toastContext.neutral('Toast is default', {onClose: action('onClose')})}
+        onPress={() => toastContext.neutral('Toast is default', {onClose: action('onClose'), timeout: 0})}
         variant="secondary">
           Show Default Toast
       </Button>

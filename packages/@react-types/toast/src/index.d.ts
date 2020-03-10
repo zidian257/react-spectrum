@@ -13,30 +13,20 @@
 import {DOMProps, StyleProps} from '@react-types/shared';
 import {ReactNode} from 'react';
 
-export interface ToastOptions extends DOMProps, StyleProps {
+export interface ToastOptions {
   actionLabel?: ReactNode,
-  onAction?: (...args: any[]) => void,
+  onAction?: () => void, // any args?
   shouldCloseOnAction?: boolean,
-  onClose?: (...args: any[]) => void,
+  onClose?: () => void,
   timeout?: number
 }
 
-export interface ToastProps extends ToastOptions {
-  children?: ReactNode,
-  variant?: 'positive' | 'negative' | 'info',
-  toastKey?: string,
-  timer?: any
+export interface ToastContextProps {
+  positive?: (content: ReactNode, options: ToastOptions) => void,
+  negative?: (content: ReactNode, options: ToastOptions) => void,
+  neutral?: (content: ReactNode, options: ToastOptions) => void,
+  info?: (content: ReactNode, options: ToastOptions) => void
 }
 
-export interface ToastState {
-  onAdd?: (content: ReactNode, options: ToastProps) => void,
-  onRemove?: (idKey: string) => void,
-  setToasts?: (value: ToastStateValue[]) => void,
-  toasts?: ToastStateValue[]
-}
 
-export interface ToastStateValue {
-  content: ReactNode,
-  props: ToastProps,
-  timer: any
-}
+

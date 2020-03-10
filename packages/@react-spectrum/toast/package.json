@@ -36,7 +36,8 @@
     "@react-stately/toast": "^3.0.0-alpha.1",
     "@react-types/shared": "^3.0.0-rc.1",
     "@react-types/toast": "^3.0.0-alpha.1",
-    "@spectrum-icons/ui": "^3.0.0-alpha.2"
+    "@spectrum-icons/ui": "^3.0.0-alpha.2",
+    "react-transition-group": "2.7.0"
   },
   "devDependencies": {
     "@adobe/spectrum-css-temp": "^3.0.0-alpha.2",
