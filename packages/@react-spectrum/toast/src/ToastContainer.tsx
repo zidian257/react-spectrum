@@ -26,7 +26,7 @@ export function ToastContainer(props: ToastState): ReactElement {
   } = props;
   let providerProps = useProvider();
 
-  let toastPlacement = providerProps && providerProps.toastPlacement && "top".split(' ');
+  let toastPlacement = providerProps && providerProps.toastPlacement && providerProps.toastPlacement.split(' ');
   let containerPosition = toastPlacement && toastPlacement[0];
   let containerPlacement = toastPlacement && toastPlacement[1];
 

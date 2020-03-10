@@ -12,21 +12,30 @@
 
 import {chain} from '@react-aria/utils';
 import {DOMProps} from '@react-types/shared';
-import {HTMLAttributes, ImgHTMLAttributes} from 'react';
+import {ButtonHTMLAttributes, HTMLAttributes, ImgHTMLAttributes} from 'react';
+// @ts-ignore
 import intlMessages from '../intl/*.json';
 import {PressProps} from '@react-aria/interactions';
-import {ToastProps, ToastState} from '@react-types/toast';
+import {ToastOptions, ToastState} from '@react-types/toast';
 import {useFocus, useHover} from '@react-aria/interactions';
 import {useId} from '@react-aria/utils';
 import {useMessageFormatter} from '@react-aria/i18n';
 
-interface ToastAriaProps extends ToastProps {}
+interface ToastAriaProps extends ToastOptions {
+  // id?: string,
+  // toastKey: string,
+  // timer:,
+  // variant:,
+  // onAction,
+  // onClose,
+  // shouldCloseOnAction
+}
 
 interface ToastAria {
   toastProps: HTMLAttributes<HTMLElement>,
   iconProps: ImgHTMLAttributes<HTMLElement>,
-  actionButtonProps: PressProps,
-  closeButtonProps: DOMProps & PressProps
+  actionButtonProps: ButtonHTMLAttributes<HTMLButtonElement> & PressProps,
+  closeButtonProps: ButtonHTMLAttributes<HTMLButtonElement> & PressProps
 }
 
 export function useToast(props: ToastAriaProps, state: ToastState): ToastAria {
@@ -40,7 +49,7 @@ export function useToast(props: ToastAriaProps, state: ToastState): ToastAria {
     variant
   } = props;
   let {
-    onRemove
+    remove
   } = state;
   let formatMessage = useMessageFormatter(intlMessages);
 
@@ -51,7 +60,7 @@ export function useToast(props: ToastAriaProps, state: ToastState): ToastAria {
 
     if (shouldCloseOnAction) {
       onClose && onClose(...args);
-      onRemove && onRemove(toastKey);
+      remove && remove(toastKey);
     }
   };
 
@@ -89,7 +98,7 @@ export function useToast(props: ToastAriaProps, state: ToastState): ToastAria {
     closeButtonProps: {
       'aria-label': formatMessage('close'),
       ...focusProps,
-      onPress: chain(onClose, () => onRemove(toastKey))
+      onPress: chain(onClose, () => remove(toastKey))
     }
   };
 }

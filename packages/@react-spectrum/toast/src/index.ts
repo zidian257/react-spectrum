@@ -10,6 +10,5 @@
  * governing permissions and limitations under the License.
  */
 
-export * from './Toast';
 export * from './ToastContainer';
 export * from './ToastProvider';

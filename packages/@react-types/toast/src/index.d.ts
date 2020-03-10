@@ -15,10 +15,17 @@ import {ReactNode} from 'react';
 
 export interface ToastOptions {
   actionLabel?: ReactNode,
-  onAction?: () => void, // any args?
+  onAction?: (...args: any[]) => void,
   shouldCloseOnAction?: boolean,
-  onClose?: () => void,
+  onClose?: (...args: any[]) => void,
   timeout?: number
+}
+
+export interface ToastState {
+  add?: (content: ReactNode, options: ToastStateProps) => void,
+  remove?: (toastKey: string) => void,
+  setToasts?: (value: any) => void,
+  toasts?: ToastStateValue[]
 }
 
 export interface ToastContextProps {

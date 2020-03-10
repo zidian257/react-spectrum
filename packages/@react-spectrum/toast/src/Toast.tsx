@@ -44,7 +44,7 @@ function Toast(props: SpectrumToastProps, ref: DOMRef<HTMLDivElement>) {
   let {
     actionLabel,
     children,
-    onRemove,
+    remove,
     variant,
     ...otherProps
   } = props;
@@ -53,7 +53,7 @@ function Toast(props: SpectrumToastProps, ref: DOMRef<HTMLDivElement>) {
     closeButtonProps,
     iconProps,
     toastProps
-  } = useToast({...otherProps, variant}, {onRemove});
+  } = useToast({...otherProps, variant}, {remove});
   let domRef = useDOMRef(ref);
   let {styleProps} = useStyleProps(otherProps);
   let Icon = ICONS[variant];

@@ -10,12 +10,11 @@
  * governing permissions and limitations under the License.
  */
 
-import {ReactNode, useRef, useState} from 'react';
+import {ReactNode, useState} from 'react';
 import {Timer} from './';
 import {ToastOptions} from '@react-types/toast';
 
 
-// Is this needed?
 interface ToastStateProps extends ToastOptions{
   variant?: 'positive' | 'negative' | 'info'
 }
@@ -25,14 +24,6 @@ interface ToastStateValue {
   content: ReactNode,
   props: ToastStateProps,
   timer: any
-}
-
-
-interface ToastState {
-  add?: (content: ReactNode, options: ToastStateProps) => void,
-  remove?: (toastKey: string) => void,
-  setToasts?: (value: any) => void,
-  toasts?: ToastStateValue[]
 }
 
 const TOAST_TIMEOUT = 9000;
