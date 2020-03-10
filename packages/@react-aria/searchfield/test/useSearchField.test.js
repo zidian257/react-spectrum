@@ -10,7 +10,6 @@
  * governing permissions and limitations under the License.
  */
 
-// @ts-ignore
 import intlMessages from '../intl/*.json';
 import {Provider} from '@react-spectrum/provider';
 import React from 'react';
