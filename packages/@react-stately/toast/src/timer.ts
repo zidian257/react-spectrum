@@ -10,24 +10,31 @@
  * governing permissions and limitations under the License.
  */
 
-export function Timer(callback: () => void, delay: number) {
-  let timerId, start;
-  let remaining = delay;
+export class Timer {
+  private callback: () => void;
+  private remaining: number;
+  private timerId: NodeJS.Timeout;
+  private start: number;
 
-  this.pause = () => {
-    clearTimeout(timerId);
-    remaining -= Date.now() - start;
+  constructor(callback: () => void, delay: number) {
+    this.callback = callback;
+    this.remaining = delay;
+  }
+
+  pause() {
+    global.clearTimeout(this.timerId);
+    this.remaining -= Date.now() - this.start;
+  }
+
+  resume() {
+    this.start = Date.now();
+    if (this.timerId) {
+      global.clearTimeout(this.timerId);
+    }
+    this.timerId = global.setTimeout(this.callback, this.remaining);
+  }
+
+  clear() {
+    global.clearTimeout(this.timerId);
   };
-
-  this.resume = () => {
-    start = Date.now();
-    timerId && clearTimeout(timerId);
-    timerId = setTimeout(callback, remaining);
-  };
-
-  this.clear = () => {
-    clearTimeout(timerId);
-  };
-
-  this.resume();
 }

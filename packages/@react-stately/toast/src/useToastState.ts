@@ -11,7 +11,7 @@
  */
 
 import {ReactNode, useState} from 'react';
-import {Timer} from './';
+import {Timer} from './timer';
 import {ToastOptions} from '@react-types/toast';
 
 
@@ -23,7 +23,7 @@ interface ToastStateProps extends ToastOptions{
 interface ToastStateValue {
   content: ReactNode,
   props: ToastStateProps,
-  timer: any
+  timer: Timer
 }
 
 const TOAST_TIMEOUT = 9000;
@@ -48,16 +48,29 @@ export function useToastState(props?: any): ToastState {
       props: options,
       timer
     };
+
+    let isInitialToast = toasts && toasts.length === 0;
     setToasts(prevToasts => [...prevToasts, newToast]);
+    if (isInitialToast) {
+      newToast.timer.resume();
+    }
   };
 
   const remove = (toastKey: string) => {
-    setToasts(prevToasts => [...prevToasts].filter(item => {
-      if (item.props.toastKey === toastKey && item.timer) {
-        item.timer.clear();
+    setToasts((prevToasts) => {
+      let remainingToasts = [...prevToasts].filter(item => {
+        if (item.props.toastKey === toastKey && item.timer) {
+          item.timer.clear();
+        }
+        return item.props.toastKey !== toastKey;
+      })
+      console.log("the toatss", remainingToasts)
+      if (remainingToasts.length > 0) {
+        remainingToasts[0].timer.resume();
       }
-      return item.props.toastKey !== toastKey;
-    }));
+      return remainingToasts;
+    });
+
   };
 
   return {

@@ -21,14 +21,19 @@ import {useFocus, useHover} from '@react-aria/interactions';
 import {useId} from '@react-aria/utils';
 import {useMessageFormatter} from '@react-aria/i18n';
 
+// TODO: This is a dupe. Should it have a different name or just go in types?
+type Timer = {
+  resume: () => void,
+  pause: () => void,
+  clear: () => void
+}
+
 interface ToastAriaProps extends ToastOptions {
-  // id?: string,
-  // toastKey: string,
-  // timer:,
-  // variant:,
-  // onAction,
-  // onClose,
-  // shouldCloseOnAction
+  id?: string,
+  shouldCloseOnAction?: boolean,
+  variant?: 'positive' | 'negative' | 'info',
+  toastKey?: string,
+  timer?: Timer
 }
 
 interface ToastAria {

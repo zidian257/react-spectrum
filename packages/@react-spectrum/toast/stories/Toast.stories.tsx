@@ -14,34 +14,14 @@ import {action} from '@storybook/addon-actions';
 import {Button} from '@react-spectrum/button';
 import React from 'react';
 import {storiesOf} from '@storybook/react';
-import {Toast} from '../';
+import {Toast} from '../src/Toast';
 import {ToastProps} from '@react-types/toast';
 import {useToastProvider} from '../';
 
 storiesOf('Toast', module)
   .add(
-    'Default',
-    () => render({onClose: action('onClose')}, 'Toast is done.')
-  )
-  .add(
-    'variant = info',
-    () => render({variant: 'info', onClose: action('onClose')}, 'Toast is happening.')
-  )
-  .add(
-    'variant = positive',
-    () => render({variant: 'positive', onClose: action('onClose')}, 'Toast is perfect.')
-  )
-  .add(
-    'variant = Negative',
-    () => render({variant: 'negative', onClose: action('onClose')}, 'Toast is not done.')
-  )
-  .add(
-    'actionable',
-      () => render({actionLabel: 'Undo', onAction: action('onAction'), onClose: action('onClose')}, 'Untoast the toast')
-  )
-  .add(
     'action triggers close',
-    () => render({actionLabel: 'Undo', onAction: action('onAction'), shouldCloseOnAction: true, onClose: action('onClose')}, 'Close on untoasting of the toast')
+    () => <RenderActionProvider />
   ).add(
     'add via provider',
     () => <RenderProvider />
@@ -50,11 +30,21 @@ storiesOf('Toast', module)
     () => <RenderProviderTimers />
   );
 
-function render(props:ToastProps = {}, message:String) {
+function RenderActionProvider() {
+  let toastContext = useToastProvider();
   return (
-    <Toast {...props}>
-      {message}
-    </Toast>
+    <>
+      <Button
+        onPress={() => toastContext.negative('Toast was burnt', {actionLabel: 'Undo', onAction: action('onAction'), onClose: action('onClose')})}
+        variant="negative">
+          Show actionable Toast
+      </Button>
+      <Button
+        onPress={() => toastContext.negative('Toasting happened', {shouldCloseOnAction: true, actionLabel: 'Confirm', onAction: action('onAction'), onClose: action('onClose')})}
+        variant="negative">
+          Show close on action Toast
+      </Button>
+    </>
   );
 }
 
@@ -64,17 +54,17 @@ function RenderProvider() {
   return (
     <div>
       <Button
-        onPress={() => toastContext.neutral('Toast is default', {onClose: action('onClose'), timeout: 0})}
+        onPress={() => toastContext.neutral('Toast is default', {onClose: action('onClose'), timeout: 7000})}
         variant="secondary">
           Show Default Toast
       </Button>
       <Button
-        onPress={() => toastContext.positive('Toast is positive', {onClose: action('onClose')})}
+        onPress={() => toastContext.positive('Toast is positive', {onClose: action('onClose'), timeout: 9000})}
         variant="primary">
           Show Primary Toast
       </Button>
       <Button
-        onPress={() => toastContext.negative('Toast is negative', {onClose: action('onClose')})}
+        onPress={() => toastContext.negative('Toast is negative', {onClose: action('onClose'), timeout: 10000})}
         variant="negative">
           Show Negative Toast
       </Button>

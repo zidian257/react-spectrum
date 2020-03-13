@@ -16,23 +16,21 @@ import {classNames, filterDOMProps, useDOMRef, useStyleProps} from '@react-spect
 import CrossMedium from '@spectrum-icons/ui/CrossMedium';
 import {DOMRef} from '@react-types/shared';
 import InfoMedium from '@spectrum-icons/ui/InfoMedium';
-import React from 'react';
+import React, {ReactNode} from 'react';
 import styles from '@adobe/spectrum-css-temp/components/toast/vars.css';
 import SuccessMedium from '@spectrum-icons/ui/SuccessMedium';
 import toastContainerStyles from './toastContainer.css';
-import {ToastProps, ToastState} from '@react-types/toast';
+import {ToastOptions, ToastState} from '@react-types/toast';
 import {useToast} from '@react-aria/toast';
-import {ToastOptions} from '@react-types/toast';
 
 
-// interface ToastProps extends ToastOptions {
-//   children?: ReactNode,
-//   variant?: 'positive' | 'negative' | 'info',
-//   toastKey?: string
+interface ToastProps extends ToastOptions {
+  children?: ReactNode,
+  variant?: 'positive' | 'negative' | 'info',
+  toastKey?: string
+}
 
-// }
-
-// interface SpectrumToastProps extends ToastProps, ToastState {}
+interface SpectrumToastProps extends ToastProps, ToastState {}
 
 export const ICONS = {
   info: InfoMedium,

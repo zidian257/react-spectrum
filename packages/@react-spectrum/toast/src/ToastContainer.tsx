@@ -12,7 +12,7 @@
 
 import {classNames, filterDOMProps} from '@react-spectrum/utils';
 import React, {ReactElement} from 'react';
-import {Toast} from './';
+import {Toast} from './Toast';
 import toastContainerStyles from './toastContainer.css';
 import {ToastState} from '@react-types/toast';
 import {useProvider} from '@react-spectrum/provider';
@@ -51,16 +51,32 @@ export function ToastContainer(props: ToastState): ReactElement {
       </CSSTransition>
     )
   );
+  console.log("containter otasts", toasts)
+  if (!toasts || toasts.length === 0) {
+    console.log("in return")
+    return null;
+  }
 
+  console.log("timers in render", toasts)
   return (
-    <TransitionGroup
-      className={classNames(
-        toastContainerStyles,
-        'react-spectrum-ToastContainer',
-        containerPosition && `react-spectrum-ToastContainer--${containerPosition}`,
-        containerPlacement && `react-spectrum-ToastContainer--${containerPlacement}`
-      )}>
-      {renderToasts()}
-    </TransitionGroup>
+
+      <TransitionGroup
+        className={classNames(
+          toastContainerStyles,
+          'react-spectrum-ToastContainer',
+          containerPosition && `react-spectrum-ToastContainer--${containerPosition}`,
+          containerPlacement && `react-spectrum-ToastContainer--${containerPlacement}`
+        )}>
+        <CSSTransition key={toasts[0].props.toastKey} classNames={classes} timeout={200}>
+          <Toast
+            {...toasts[0].props}
+            onRemove={onRemove}
+            timer={toasts[0].timer}>
+            {toasts[0].content}
+          </Toast>
+        </CSSTransition>
+      </TransitionGroup>
+
+
   );
 }
