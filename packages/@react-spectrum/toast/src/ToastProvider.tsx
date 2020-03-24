@@ -12,7 +12,7 @@
 
 import React, {ReactElement, ReactNode, useContext} from 'react';
 import {ToastContainer} from './';
-import {ToastOptions} from '@react-types/toast';
+import {ToastContextProps, ToastOptions} from '@react-types/toast';
 import {useProviderProps} from '@react-spectrum/provider';
 import {useToastState} from '@react-stately/toast';
 
@@ -45,13 +45,13 @@ export function ToastProvider(props: ToastProviderProps): ReactElement {
       add(content, {...options, toastKey: generateKey(), variant: 'negative'});
     },
     info: (content: ReactNode, options: ToastOptions = {}) => {
-     add(content, {...options, toastKey: generateKey(), variant: 'info'});
+      add(content, {...options, toastKey: generateKey(), variant: 'info'});
     }
   };
 
   return (
     <ToastContext.Provider value={contextValue}>
-      <ToastContainer toasts={toasts} onRemove={remove} />
+      <ToastContainer toasts={toasts} />
       {props.children}
     </ToastContext.Provider>
   );

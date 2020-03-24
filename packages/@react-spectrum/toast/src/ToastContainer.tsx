@@ -11,17 +11,37 @@
  */
 
 import {classNames, filterDOMProps} from '@react-spectrum/utils';
-import React, {ReactElement} from 'react';
+import React, {ReactElement, ReactNode} from 'react';
 import {Toast} from './Toast';
 import toastContainerStyles from './toastContainer.css';
-import {ToastState} from '@react-types/toast';
+import {ToastOptions} from '@react-types/toast';
 import {useProvider} from '@react-spectrum/provider';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
-export function ToastContainer(props: ToastState): ReactElement {
+interface ToastStateProps extends ToastOptions{
+  variant?: 'positive' | 'negative' | 'info',
+  id?: string
+}
+
+type Timer = {
+  resume: () => void,
+  pause: () => void,
+  clear: () => void
+}
+
+interface ToastStateValue {
+  content: ReactNode,
+  props: ToastStateProps,
+  timer: Timer
+}
+
+interface SpectrumToastContainerProps {
+  toasts?: ToastStateValue[]
+}
+
+export function ToastContainer(props: SpectrumToastContainerProps): ReactElement {
   let {
-    onRemove,
     toasts
   } = props;
   let providerProps = useProvider();
@@ -39,21 +59,8 @@ export function ToastContainer(props: ToastState): ReactElement {
     exitActive: classNames(toastContainerStyles, `react-spectrum-Toast-slide-${containerPosition}-exit-active`),
   };
 
-  let renderToasts = () => toasts.map((toast) =>
-    (
-      <CSSTransition key={toast.props.toastKey} classNames={classes} timeout={200}>
-        <Toast
-          {...toast.props}
-          onRemove={onRemove}
-          timer={toast.timer}>
-          {toast.content}
-        </Toast>
-      </CSSTransition>
-    )
-  );
   console.log("containter otasts", toasts)
   if (!toasts || toasts.length === 0) {
-    console.log("in return")
     return null;
   }
 
@@ -70,7 +77,6 @@ export function ToastContainer(props: ToastState): ReactElement {
         <CSSTransition key={toasts[0].props.toastKey} classNames={classes} timeout={200}>
           <Toast
             {...toasts[0].props}
-            onRemove={onRemove}
             timer={toasts[0].timer}>
             {toasts[0].content}
           </Toast>

@@ -15,15 +15,22 @@ import {Timer} from './timer';
 import {ToastOptions} from '@react-types/toast';
 
 
-interface ToastStateProps extends ToastOptions{
-  variant?: 'positive' | 'negative' | 'info'
+interface ToastProps extends ToastOptions{
+  variant?: 'positive' | 'negative' | 'info',
+  toastKey: string
 }
 
-// Object used to store a Toast in state
 interface ToastStateValue {
   content: ReactNode,
-  props: ToastStateProps,
+  props: ToastProps,
   timer: Timer
+}
+
+interface ToastState {
+  add: (content: ReactNode, options: ToastProps) => void,
+  remove: (toastKey: string) => void,
+  setToasts: (value: ToastStateValue[]) => void,
+  toasts: ToastStateValue[]
 }
 
 const TOAST_TIMEOUT = 9000;
@@ -31,7 +38,7 @@ const TOAST_TIMEOUT = 9000;
 export function useToastState(props?: any): ToastState {
   let [toasts, setToasts] = useState(props && props.value || []);
 
-  const add = (content: ReactNode, options: ToastStateProps) => {
+  const add = (content: ReactNode, options: ToastProps) => {
     let timer;
 
     // set timer to remove toasts
@@ -73,6 +80,7 @@ export function useToastState(props?: any): ToastState {
 
   };
 
+// move the timer into the toast. Toast gets it own state. Calls the remove function. Pass in the state object from toast container to Toast.
   return {
     add,
     remove,

@@ -11,7 +11,7 @@
  */
 
 import {chain} from '@react-aria/utils';
-import {DOMProps} from '@react-types/shared';
+import {DOMProps, StyleProps} from '@react-types/shared';
 import {ButtonHTMLAttributes, HTMLAttributes, ImgHTMLAttributes} from 'react';
 // @ts-ignore
 import intlMessages from '../intl/*.json';
@@ -28,9 +28,7 @@ type Timer = {
   clear: () => void
 }
 
-interface ToastAriaProps extends ToastOptions {
-  id?: string,
-  shouldCloseOnAction?: boolean,
+interface ToastAriaProps extends ToastOptions, DOMProps, StyleProps {
   variant?: 'positive' | 'negative' | 'info',
   toastKey?: string,
   timer?: Timer
@@ -89,6 +87,7 @@ export function useToast(props: ToastAriaProps, state: ToastState): ToastAria {
     onBlur: resumeTimer
   });
 
+  console.log("remove func", state)
   return {
     toastProps: {
       ...hoverProps,

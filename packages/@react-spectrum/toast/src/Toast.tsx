@@ -14,7 +14,7 @@ import AlertMedium from '@spectrum-icons/ui/AlertMedium';
 import {Button, ClearButton} from '@react-spectrum/button';
 import {classNames, filterDOMProps, useDOMRef, useStyleProps} from '@react-spectrum/utils';
 import CrossMedium from '@spectrum-icons/ui/CrossMedium';
-import {DOMRef} from '@react-types/shared';
+import {DOMProps, DOMRef, StyleProps} from '@react-types/shared';
 import InfoMedium from '@spectrum-icons/ui/InfoMedium';
 import React, {ReactNode} from 'react';
 import styles from '@adobe/spectrum-css-temp/components/toast/vars.css';
@@ -24,8 +24,13 @@ import {ToastOptions, ToastState} from '@react-types/toast';
 import {useToast} from '@react-aria/toast';
 
 
-interface ToastProps extends ToastOptions {
-  children?: ReactNode,
+type Timer = {
+  resume: () => void,
+  pause: () => void,
+  clear: () => void
+}
+
+interface ToastAriaProps extends ToastOptions, DOMProps, StyleProps {
   variant?: 'positive' | 'negative' | 'info',
   toastKey?: string
 }
@@ -38,11 +43,10 @@ export const ICONS = {
   positive: SuccessMedium
 };
 
-function Toast(props: SpectrumToastProps, ref: DOMRef<HTMLDivElement>) {
+function Toast(props: SpectrumToastProps, ref: DOMRef) {
   let {
     actionLabel,
     children,
-    remove,
     variant,
     ...otherProps
   } = props;
@@ -51,7 +55,7 @@ function Toast(props: SpectrumToastProps, ref: DOMRef<HTMLDivElement>) {
     closeButtonProps,
     iconProps,
     toastProps
-  } = useToast({...otherProps, variant}, {remove});
+  } = useToast({...otherProps, variant}, {remove}); // Figure out what is meant to go to useToast. Remove?
   let domRef = useDOMRef(ref);
   let {styleProps} = useStyleProps(otherProps);
   let Icon = ICONS[variant];

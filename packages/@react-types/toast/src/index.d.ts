@@ -21,6 +21,13 @@ export interface ToastOptions {
   timeout?: number
 }
 
+// Object used to store a Toast in state
+interface ToastStateValue {
+  content: ReactNode,
+  props: ToastStateProps,
+  timer: Timer
+}
+
 export interface ToastState {
   add?: (content: ReactNode, options: ToastStateProps) => void,
   remove?: (toastKey: string) => void,
