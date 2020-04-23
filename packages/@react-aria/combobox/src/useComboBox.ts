@@ -15,7 +15,7 @@
 import {chain, mergeProps} from '@react-aria/utils';
 import {CollectionBase, SingleSelection} from '@react-types/shared';
 import {ComboBoxState} from '@react-stately/combobox';
-import {FocusEvent, HTMLAttributes, useEffect, useState} from 'react';
+import {FocusEvent, HTMLAttributes, useEffect, useRef, useState} from 'react';
 import {useMenuTrigger} from '@react-aria/menu';
 import {useSelectableCollection} from '@react-aria/selection';
 import {useTextField} from '@react-aria/textfield';
@@ -61,20 +61,23 @@ export function useComboBox<T>(props: AriaComboBoxProps<T>, state: ComboBoxState
     state
   );
 
+  let valueChange = useRef(false)
   // TextFieldBase already has useTextField and will return the value of onChange as a string instead
   // of an event, this leads to us getting onChange twice if we useTextField as well, and it'll throw an error
   // because string.target doesn't exist
   let onChange = (val) => {
     state.setValue(val);
+    valueChange.current = true;
   };
-
   useEffect(() => {
-    if (props.menuTrigger === 'input' && state.value.length > 0 && state.collection.size > 0) {
+    if (props.menuTrigger === 'input' && state.collection.size > 0 && valueChange.current) {
       state.open(); // is this right? at this time, we haven't filtered, so we don't know if the character they type will result in an empty menu
+      valueChange.current = false;
     } else if (state.collection && state.collection.size === 0) {
       state.close();
+      valueChange.current = false;
     }
-  }, [state.collection, state.value, props.menuTrigger]);
+  }, [state.collection, state.value, props.menuTrigger, valueChange]);
 
   useEffect(() => {
     let selectedItem = state.selectedKey ? state.collection.getItem(state.selectedKey) : null;
@@ -112,14 +115,19 @@ export function useComboBox<T>(props: AriaComboBoxProps<T>, state: ComboBoxState
     disallowEmptySelection: true
   });
 
-  let onBlur = () => {
-    if (state.isOpen && focusedItem) {
-      state.setSelectedKey(state.selectionManager.focusedKey);
-    }
-
+  let onBlur = (e) => {
     // A bit strange behavior when isOpen is true, menu can't close so you can't tab away from the
     // textfield, almost like a focus trap
     state.close();
+
+    // If user is clicking on the combobox button, early return so we don't change focus state and close menu twice
+    if (props.triggerRef && props.triggerRef.current.contains(e.relatedTarget)) {
+      return;
+    }
+
+    if (state.isOpen && focusedItem) {
+      state.setSelectedKey(state.selectionManager.focusedKey);
+    }
   };
 
   // For textfield specific keydown operations
