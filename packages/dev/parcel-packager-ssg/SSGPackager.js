@@ -66,6 +66,7 @@ module.exports = new Packager({
       }
     });
 
+    console.log(mainAsset.filePath);
     let code = ReactDOMServer.renderToStaticMarkup(
       React.createElement(Component, {
         scripts: bundles.filter(b => b.type === 'js' && !b.isInline).map(b => ({
@@ -77,6 +78,7 @@ module.exports = new Packager({
         })),
         pages,
         currentPage: {
+          filePath: mainAsset.filePath,
           category: mainAsset.meta.category,
           name: bundle.name,
           title: mainAsset.meta.title,

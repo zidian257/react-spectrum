@@ -151,7 +151,7 @@ function Nav({currentPageName, pages}) {
   let isIndex = /index\.html$/;
   let currentParts = currentPageName.split('/');
   let currentDir = currentParts[0];
-    
+
   pages = pages.filter(p => {
     let pageParts = p.name.split('/');
     let pageDir = pageParts[0];
@@ -247,6 +247,7 @@ function Footer() {
 
 export function Layout({scripts, styles, pages, currentPage, publicUrl, children, toc}) {
 
+  let pathToPage = currentPage.filePath.substring(currentPage.filePath.indexOf('packages/'), currentPage.filePath.length);
   return (
     <Page title={currentPage.title} scripts={scripts} styles={styles}>
       <div className={docStyles.pageHeader} id="header" />
@@ -259,6 +260,7 @@ export function Layout({scripts, styles, pages, currentPage, publicUrl, children
             </ImageContext.Provider>
           </MDXProvider>
         </article>
+        <a href={`https://github.com/adobe-private/react-spectrum-v3/tree/master/${encodeURI(pathToPage)}`} target="_blank">Edit Page</a>
         {toc.length ? <ToC toc={toc} /> : null}
         <Footer />
       </main>
