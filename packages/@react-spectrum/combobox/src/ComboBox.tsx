@@ -245,5 +245,8 @@ function ComboBox<T extends object>(props: SpectrumComboBoxProps<T>, ref: RefObj
   return textField;
 }
 
+/**
+ * ComboBoxes combine a text entry with a picker menu, allowing users to filter longer lists to only the selections matching a query.
+ */
 const _ComboBox = React.forwardRef(ComboBox) as <T>(props: SpectrumComboBoxProps<T> & {ref?: RefObject<TextFieldRef>}) => ReactElement;
 export {_ComboBox as ComboBox};

@@ -1,0 +1,77 @@
+<!-- Copyright 2020 Adobe. All rights reserved.
+This file is licensed to you under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License. You may obtain a copy
+of the License at http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software distributed under
+the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+OF ANY KIND, either express or implied. See the License for the specific language
+governing permissions and limitations under the License. -->
+
+import {Layout} from '@react-spectrum/docs';
+export default Layout;
+
+import docs from 'docs:@react-spectrum/combobox';
+import packageData from '../package.json';
+import {HeaderInfo, PropTable} from '@react-spectrum/docs';
+
+```jsx import
+ import {ComboBox} from '@react-spectrum/combobox';
+ ```
+
+---
+category: Pickers
+---
+
+# ComboBox
+
+<p>{docs.exports.ComboBox.description}</p>
+
+<HeaderInfo
+ packageData={packageData}
+ componentNames={['ComboBox']}
+ sourceData={[
+ {type: 'Spectrum', url: 'https://spectrum.adobe.com/page/combo-box/'}
+ ]} />
+
+## Example
+
+```tsx example
+import {ComboBox, Item} from '@react-spectrum/combobox';
+
+<ComboBox label="Fruit">
+  <Item uniqueKey="1">Oranges</Item>
+  <Item uniqueKey="2">Apples</Item>
+  <Item uniqueKey="3">Pears</Item>
+</ComboBox>
+```
+
+## Content
+
+*If the component has a children prop that accepts any type of content (e.g. `ReactNode`), include this section. Please include a note about how to internationalize the content.*
+
+## Value
+
+*If the component displays or allows a user to input a value, include this section.*
+
+## Labeling
+
+*If the component supports a label prop, include this section. Please include a note about how to internationalize the content.*
+
+## Events
+
+*If the component supports event props, include this section. Only cover the events that are important to the main functionality of the component.*
+
+## Validation
+
+*If the component supports validation props, include this section.*
+
+## Props
+
+<PropTable component={docs.exports.Component} links={docs.links} />
+
+## Visual Options
+
+*Show examples of all variants and visual props here with links to the design website for more usage details. Examples can be grouped together for conciseness.*
+
+### Sample Option
+[View guidelines](https://spectrum.adobe.com/page/text-field/#Width)

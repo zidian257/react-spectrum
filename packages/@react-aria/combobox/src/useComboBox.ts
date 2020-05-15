@@ -37,6 +37,13 @@ interface ComboBoxAria {
   labelProps: HTMLAttributes<HTMLElement>
 }
 
+/**
+ * Provides the behavior and accessibility implementation for a combobox component.
+ * A combobox combines a text entry with a picker menu that displays a collapsible list 
+ * of options and allows a user to select one of them.
+ * @param props - props for the select
+ * @param state - state for the select, as returned by `useListState`
+ */
 export function useComboBox<T>(props: AriaComboBoxProps<T>, state: ComboBoxState<T>): ComboBoxAria {
   let {
     triggerRef,

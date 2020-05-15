@@ -15,8 +15,6 @@ import {HeaderInfo, PropTable} from '@react-spectrum/docs';
 import packageData from '../package.json';
 
 ```jsx import
-import {Breadcrumbs} from '@react-spectrum/breadcrumbs';
-import {Item} from '@react-stately/collections';
 import {View} from '@react-spectrum/view';
 ```
 
@@ -35,6 +33,8 @@ category: Navigation
 ## Example
 
 ```tsx example
+import {Breadcrumbs, Item} from '@react-spectrum/breadcrumbs';
+
 <Breadcrumbs>
   <Item uniqueKey="Folder 1">Folder 1</Item>
   <Item uniqueKey="Folder 2">Folder 2</Item>
