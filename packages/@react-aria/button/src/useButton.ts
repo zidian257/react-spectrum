@@ -34,6 +34,7 @@ export function useButton(props: AriaButtonProps, ref: RefObject<HTMLElement>): 
   let {
     elementType = 'button',
     isDisabled,
+    isPending,
     onPress,
     onPressStart,
     onPressEnd,
@@ -62,7 +63,7 @@ export function useButton(props: AriaButtonProps, ref: RefObject<HTMLElement>): 
     onPressEnd,
     onPressChange,
     onPress,
-    isDisabled,
+    isDisabled: isDisabled || isPending,
     ref
   });
 
@@ -77,6 +78,7 @@ export function useButton(props: AriaButtonProps, ref: RefObject<HTMLElement>): 
       'aria-expanded': props['aria-expanded'],
       'aria-controls': props['aria-controls'],
       'aria-pressed': props['aria-pressed'],
+      'aria-disabled': isPending || undefined,
       disabled: isDisabled,
       type,
       ...(additionalProps || {}),
