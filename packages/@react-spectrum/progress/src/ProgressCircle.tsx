@@ -59,15 +59,13 @@ function ProgressCircle(props: SpectrumProgressCircleProps, ref: DOMRef<HTMLDivE
   let canvasRef = useRef(null);
   useEffect(() => {
     if (canvasRef.current) {
+      let offcanvas = document.querySelector('#canvas');
       let canvas;
       let ctx;
       let scale;
       let size = 64;
       let scaledSize;
-      let strokeSize = 4;
-      let cubicBezier = (P0, P1, P2, P3) => (t) => (1 - t) * (1 - t) * (1 - t) * P0 + 3 * (1 - t) * (1 - t) * t * P1 + 3 * (1 - t) * t * t * P2 + t * t * t * P3
-      let headAnimation = cubicBezier(.04, .72, .3, .9);
-      let tailAnimation = cubicBezier(0, 0, 1, 1);
+
       canvas = canvasRef.current;
       ctx = canvas.getContext("2d");
       ctx.globalCompositeOperation = 'destination-in';
@@ -83,24 +81,7 @@ function ProgressCircle(props: SpectrumProgressCircleProps, ref: DOMRef<HTMLDivE
 
       function draw() {
         ctx.clearRect(0, 0, scaledSize, scaledSize);
-        var centerX = scaledSize / 2;
-        var centerY = scaledSize / 2;
-        var radius = scaledSize / 2 - (strokeSize * scale * 2);
-        let date = new Date();
-        let m = date.getMilliseconds();
-        let percentThrough = (m / 1000);
-
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-        ctx.strokeStyle = 'rgb(57, 57, 57)';
-        ctx.lineWidth = strokeSize * scale;
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, radius, (tailAnimation(percentThrough) - 0.5) * 2 * Math.PI, headAnimation(percentThrough) * 2 * Math.PI);
-        ctx.strokeStyle = 'rgb(28, 128, 235)';
-        ctx.lineWidth = strokeSize * scale;
-        ctx.stroke();
+        ctx.drawImage(offcanvas, 0, 0);
         requestAnimationFrame(draw);
       }
     }
