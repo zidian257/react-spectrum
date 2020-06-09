@@ -57,6 +57,8 @@ function ProgressCircle(props: SpectrumProgressCircleProps, ref: DOMRef<HTMLDivE
   }
 
   let canvasRef = useRef(null);
+  let convertTrack = [57, 57, 57, 1];
+  let convertFill = [28, 128, 235, 1];
   useEffect(() => {
     if (canvasRef.current) {
       let offcanvas = document.querySelector('#canvas');
@@ -81,7 +83,15 @@ function ProgressCircle(props: SpectrumProgressCircleProps, ref: DOMRef<HTMLDivE
 
       function draw() {
         ctx.clearRect(0, 0, scaledSize, scaledSize);
-        ctx.drawImage(offcanvas, 0, 0);
+        let original = offcanvas.getContext('2d').getImageData(0, 0, scaledSize, scaledSize);
+        /*for (var i = 0; i < original.data.length; i++) {
+          if (original.data[i][0] === 0) {
+            original.data[i] = convertTrack;
+          } else {
+            original.data[i] = convertFill;
+          }
+        }*/
+        ctx.putImageData(original, 0, 0);
         requestAnimationFrame(draw);
       }
     }

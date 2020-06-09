@@ -218,13 +218,13 @@ function CircleLoader() {
 
         ctx.beginPath();
         ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-        ctx.strokeStyle = 'rgb(57, 57, 57)';
+        ctx.strokeStyle = 'rgb(0, 0, 0)';
         ctx.lineWidth = strokeSize * scale;
         ctx.stroke();
 
         ctx.beginPath();
         ctx.arc(centerX, centerY, radius, (tailAnimation(percentThrough) - 0.5) * 2 * Math.PI, headAnimation(percentThrough) * 2 * Math.PI);
-        ctx.strokeStyle = 'rgb(28, 128, 235)';
+        ctx.strokeStyle = 'rgb(255, 255, 255)';
         ctx.lineWidth = strokeSize * scale;
         ctx.stroke();
         requestAnimationFrame(draw);
