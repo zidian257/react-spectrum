@@ -13,7 +13,7 @@
 import {clamp} from '@react-aria/utils';
 import {classNames, useDOMRef, useStyleProps} from '@react-spectrum/utils';
 import {DOMRef} from '@react-types/shared';
-import React, {CSSProperties} from 'react';
+import React, {CSSProperties, useEffect, useRef} from 'react';
 import {SpectrumProgressCircleProps} from '@react-types/progress';
 import styles from '@adobe/spectrum-css-temp/components/circleloader/vars.css';
 import {useProgressBar} from '@react-aria/progress';
@@ -56,6 +56,79 @@ function ProgressCircle(props: SpectrumProgressCircleProps, ref: DOMRef<HTMLDivE
     console.warn('ProgressCircle requires an aria-label or aria-labelledby attribute for accessibility');
   }
 
+  let canvasRef = useRef(null);
+  useEffect(() => {
+    if (canvasRef.current) {
+      let canvas;
+      let ctx;
+      let scale;
+      let size = 64;
+      let scaledSize;
+      let strokeSize = 4;
+      let cubicBezier = (P0, P1, P2, P3) => (t) => (1 - t) * (1 - t) * (1 - t) * P0 + 3 * (1 - t) * (1 - t) * t * P1 + 3 * (1 - t) * t * t * P2 + t * t * t * P3
+      let headAnimation = cubicBezier(.04, .72, .3, .9);
+      let tailAnimation = cubicBezier(0, 0, 1, 1);
+      canvas = canvasRef.current;
+      ctx = canvas.getContext("2d");
+      ctx.globalCompositeOperation = 'destination-in';
+      scale = window.devicePixelRatio;
+      scaledSize = size * scale;
+      // Normalize coordinate system to use css pixels.
+      ctx.scale(scale, scale);
+      canvas.width = scaledSize;
+      canvas.height = scaledSize;
+      canvas.style.width = `${size}px`;
+      canvas.style.height = `${size}px`;
+      requestAnimationFrame(draw);
+
+      function draw() {
+        ctx.clearRect(0, 0, scaledSize, scaledSize);
+        var centerX = scaledSize / 2;
+        var centerY = scaledSize / 2;
+        var radius = scaledSize / 2 - (strokeSize * scale * 2);
+        let date = new Date();
+        let m = date.getMilliseconds();
+        let percentThrough = (m / 1000);
+
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+        ctx.strokeStyle = 'rgb(57, 57, 57)';
+        ctx.lineWidth = strokeSize * scale;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, (tailAnimation(percentThrough) - 0.5) * 2 * Math.PI, headAnimation(percentThrough) * 2 * Math.PI);
+        ctx.strokeStyle = 'rgb(28, 128, 235)';
+        ctx.lineWidth = strokeSize * scale;
+        ctx.stroke();
+        requestAnimationFrame(draw);
+      }
+    }
+  }, [canvasRef.current]);
+
+  if (isIndeterminate) {
+    return (
+      <div
+        {...styleProps}
+        {...progressBarProps}
+        ref={domRef}
+        className={
+          classNames(
+            styles,
+            'spectrum-CircleLoader',
+            {
+              'spectrum-CircleLoader--indeterminate': isIndeterminate,
+              'spectrum-CircleLoader--small': size === 'S',
+              'spectrum-CircleLoader--large': size === 'L',
+              'spectrum-CircleLoader--overBackground': variant === 'overBackground'
+            },
+            styleProps.className
+          )
+        }>
+        <canvas id="canvas" ref={canvasRef} />
+      </div>
+    );
+  }
   return (
     <div
       {...styleProps}
