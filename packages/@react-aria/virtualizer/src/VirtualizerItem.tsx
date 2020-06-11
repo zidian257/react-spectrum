@@ -50,7 +50,7 @@ export function layoutInfoToStyle(layoutInfo: LayoutInfo, dir: Direction, parent
   let style: CSSProperties = {
     position: layoutInfo.isSticky ? 'sticky' : 'absolute',
     top: '0px',
-    left: '0px',
+    [xProperty]: '0px',
     overflow: 'hidden',
     transform: `translate3d(${dir === 'rtl' ? -xValue : xValue}px, ${layoutInfo.rect.y - (parent ? parent.rect.y : 0)}px, 0px) ${layoutInfo.transform || ''}`,
     transition: 'all',
