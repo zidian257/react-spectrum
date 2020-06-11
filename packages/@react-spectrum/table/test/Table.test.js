@@ -2654,17 +2654,29 @@ describe('Table', function () {
           </TableBody>
         </Table>
       , scale);
+      let transformRegex = /.*translate3d\(\s*([^ ,]+)\s*,\s*([^ ,]+)\s*,\s*([^ )]+)\s*\).*/;
+      let positionFromTransform = (transform) => {
+        let results = transform.match(transformRegex);
+        return {
+          x: results[1],
+          y: results[2],
+          z: results[3]
+        };
+      };
 
       it('should layout rows with default height', function () {
         let tree = renderTable();
         let rows = tree.getAllByRole('row');
         expect(rows).toHaveLength(3);
 
-        expect(rows[0].style.top).toBe('0px');
+        let rowZeroPosition = positionFromTransform(rows[0].style.transform);
+        let rowOnePosition = positionFromTransform(rows[1].style.transform);
+        let rowTwoPosition = positionFromTransform(rows[2].style.transform);
+        expect(rowZeroPosition.y).toBe('0px');
         expect(rows[0].style.height).toBe('34px');
-        expect(rows[1].style.top).toBe('0px');
+        expect(rowOnePosition.y).toBe('0px');
         expect(rows[1].style.height).toBe('41px');
-        expect(rows[2].style.top).toBe('41px');
+        expect(rowTwoPosition.y).toBe('41px');
         expect(rows[2].style.height).toBe('41px');
 
         for (let cell of [...rows[1].childNodes, ...rows[2].childNodes]) {
@@ -2678,11 +2690,14 @@ describe('Table', function () {
         let rows = tree.getAllByRole('row');
         expect(rows).toHaveLength(3);
 
-        expect(rows[0].style.top).toBe('0px');
+        let rowZeroPosition = positionFromTransform(rows[0].style.transform);
+        let rowOnePosition = positionFromTransform(rows[1].style.transform);
+        let rowTwoPosition = positionFromTransform(rows[2].style.transform);
+        expect(rowZeroPosition.y).toBe('0px');
         expect(rows[0].style.height).toBe('40px');
-        expect(rows[1].style.top).toBe('0px');
+        expect(rowOnePosition.y).toBe('0px');
         expect(rows[1].style.height).toBe('51px');
-        expect(rows[2].style.top).toBe('51px');
+        expect(rowTwoPosition.y).toBe('51px');
         expect(rows[2].style.height).toBe('51px');
 
         for (let cell of [...rows[1].childNodes, ...rows[2].childNodes]) {
@@ -2696,11 +2711,14 @@ describe('Table', function () {
         let rows = tree.getAllByRole('row');
         expect(rows).toHaveLength(3);
 
-        expect(rows[0].style.top).toBe('0px');
+        let rowZeroPosition = positionFromTransform(rows[0].style.transform);
+        let rowOnePosition = positionFromTransform(rows[1].style.transform);
+        let rowTwoPosition = positionFromTransform(rows[2].style.transform);
+        expect(rowZeroPosition.y).toBe('0px');
         expect(rows[0].style.height).toBe('34px');
-        expect(rows[1].style.top).toBe('0px');
+        expect(rowOnePosition.y).toBe('0px');
         expect(rows[1].style.height).toBe('33px');
-        expect(rows[2].style.top).toBe('33px');
+        expect(rowTwoPosition.y).toBe('33px');
         expect(rows[2].style.height).toBe('33px');
 
         for (let cell of [...rows[1].childNodes, ...rows[2].childNodes]) {
@@ -2714,11 +2732,14 @@ describe('Table', function () {
         let rows = tree.getAllByRole('row');
         expect(rows).toHaveLength(3);
 
-        expect(rows[0].style.top).toBe('0px');
+        let rowZeroPosition = positionFromTransform(rows[0].style.transform);
+        let rowOnePosition = positionFromTransform(rows[1].style.transform);
+        let rowTwoPosition = positionFromTransform(rows[2].style.transform);
+        expect(rowZeroPosition.y).toBe('0px');
         expect(rows[0].style.height).toBe('40px');
-        expect(rows[1].style.top).toBe('0px');
+        expect(rowOnePosition.y).toBe('0px');
         expect(rows[1].style.height).toBe('41px');
-        expect(rows[2].style.top).toBe('41px');
+        expect(rowTwoPosition.y).toBe('41px');
         expect(rows[2].style.height).toBe('41px');
 
         for (let cell of [...rows[1].childNodes, ...rows[2].childNodes]) {
@@ -2732,11 +2753,14 @@ describe('Table', function () {
         let rows = tree.getAllByRole('row');
         expect(rows).toHaveLength(3);
 
-        expect(rows[0].style.top).toBe('0px');
+        let rowZeroPosition = positionFromTransform(rows[0].style.transform);
+        let rowOnePosition = positionFromTransform(rows[1].style.transform);
+        let rowTwoPosition = positionFromTransform(rows[2].style.transform);
+        expect(rowZeroPosition.y).toBe('0px');
         expect(rows[0].style.height).toBe('34px');
-        expect(rows[1].style.top).toBe('0px');
+        expect(rowOnePosition.y).toBe('0px');
         expect(rows[1].style.height).toBe('49px');
-        expect(rows[2].style.top).toBe('49px');
+        expect(rowTwoPosition.y).toBe('49px');
         expect(rows[2].style.height).toBe('49px');
 
         for (let cell of [...rows[1].childNodes, ...rows[2].childNodes]) {
@@ -2750,11 +2774,14 @@ describe('Table', function () {
         let rows = tree.getAllByRole('row');
         expect(rows).toHaveLength(3);
 
-        expect(rows[0].style.top).toBe('0px');
+        let rowZeroPosition = positionFromTransform(rows[0].style.transform);
+        let rowOnePosition = positionFromTransform(rows[1].style.transform);
+        let rowTwoPosition = positionFromTransform(rows[2].style.transform);
+        expect(rowZeroPosition.y).toBe('0px');
         expect(rows[0].style.height).toBe('40px');
-        expect(rows[1].style.top).toBe('0px');
+        expect(rowOnePosition.y).toBe('0px');
         expect(rows[1].style.height).toBe('61px');
-        expect(rows[2].style.top).toBe('61px');
+        expect(rowTwoPosition.y).toBe('61px');
         expect(rows[2].style.height).toBe('61px');
 
         for (let cell of [...rows[1].childNodes, ...rows[2].childNodes]) {
@@ -2773,9 +2800,11 @@ describe('Table', function () {
         let rows = tree.getAllByRole('row');
         expect(rows).toHaveLength(3);
 
-        expect(rows[1].style.top).toBe('0px');
+        let rowOnePosition = positionFromTransform(rows[1].style.transform);
+        let rowTwoPosition = positionFromTransform(rows[2].style.transform);
+        expect(rowOnePosition.y).toBe('0px');
         expect(rows[1].style.height).toBe('65px');
-        expect(rows[2].style.top).toBe('65px');
+        expect(rowTwoPosition.y).toBe('65px');
         expect(rows[2].style.height).toBe('49px');
 
         for (let cell of rows[1].childNodes) {
@@ -2814,11 +2843,14 @@ describe('Table', function () {
         let rows = tree.getAllByRole('row');
         expect(rows).toHaveLength(5);
 
-        expect(rows[0].style.top).toBe('0px');
+        let rowZeroPosition = positionFromTransform(rows[0].style.transform);
+        let rowOnePosition = positionFromTransform(rows[1].style.transform);
+        let rowTwoPosition = positionFromTransform(rows[2].style.transform);
+        expect(rowZeroPosition.y).toBe('0px');
         expect(rows[0].style.height).toBe('34px');
-        expect(rows[1].style.top).toBe('34px');
+        expect(rowOnePosition.y).toBe('34px');
         expect(rows[1].style.height).toBe('48px');
-        expect(rows[2].style.top).toBe('82px');
+        expect(rowTwoPosition.y).toBe('82px');
         expect(rows[2].style.height).toBe('34px');
 
         for (let cell of rows[0].childNodes) {
