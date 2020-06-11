@@ -45,12 +45,14 @@ export function layoutInfoToStyle(layoutInfo: LayoutInfo, dir: Direction, parent
   if (cached && cached[xProperty] != null) {
     return cached;
   }
+  let xValue = layoutInfo.rect.x - (parent ? parent.rect.x : 0);
 
   let style: CSSProperties = {
     position: layoutInfo.isSticky ? 'sticky' : 'absolute',
+    top: '0px',
+    left: '0px',
     overflow: 'hidden',
-    top: layoutInfo.rect.y - (parent ? parent.rect.y : 0),
-    [xProperty]: layoutInfo.rect.x - (parent ? parent.rect.x : 0),
+    transform: `translate3d(${dir === 'rtl' ? -xValue : xValue}px, ${layoutInfo.rect.y - (parent ? parent.rect.y : 0)}px, 0px) ${layoutInfo.transform || ''}`,
     transition: 'all',
     WebkitTransition: 'all',
     WebkitTransitionDuration: 'inherit',
@@ -59,7 +61,6 @@ export function layoutInfoToStyle(layoutInfo: LayoutInfo, dir: Direction, parent
     height: layoutInfo.rect.height + 'px',
     opacity: layoutInfo.opacity,
     zIndex: layoutInfo.zIndex,
-    transform: layoutInfo.transform,
     contain: 'size layout style paint'
   };
 
