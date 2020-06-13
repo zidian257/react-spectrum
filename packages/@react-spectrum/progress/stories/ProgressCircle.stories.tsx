@@ -108,7 +108,11 @@ storiesOf('Progress/ProgressCircle', module)
   )
   .add(
     'stress test',
-    () => renderStressTest()
+    () => renderStressTest(8)
+  )
+  .add(
+    'stress test varied',
+    () => renderStressTest(8, true)
   );
 
 function render(props = {}) {
@@ -117,8 +121,8 @@ function render(props = {}) {
   );
 }
 
-function renderStressTest(n = 1) {
-  let combos = [{size: 'S'}, {size: 'M'}, {size: 'L'}];
+function renderStressTest(n = 1, varied = false) {
+  let combos = varied ? [{size: 'S'}, {size: 'M'}, {size: 'L'}] : [{size: 'M'}, {size: 'M'}, {size: 'M'}];
   let times = new Array(n).fill(0);
   return (
     <>

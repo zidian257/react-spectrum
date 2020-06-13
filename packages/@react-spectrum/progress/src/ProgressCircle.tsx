@@ -70,16 +70,12 @@ function ProgressCircle(props: SpectrumProgressCircleProps, ref: DOMRef<HTMLDivE
       let spectrumCircleFillColor = window.getComputedStyle(canvasRef.current)
         .getPropertyValue('--spectrum-loader-circle-track-fill-color');
       let offcanvas = el.get(getAnimation(size, borderWidth, spectrumCircleTrackColor, spectrumCircleFillColor));
-      let canvas;
-      let ctx;
-      let scale;
-      let scaledSize;
 
-      canvas = canvasRef.current;
-      ctx = canvas.getContext('2d');
+      let canvas = canvasRef.current;
+      let ctx = canvas.getContext('2d');
       ctx.globalCompositeOperation = 'destination-in';
-      scale = window.devicePixelRatio;
-      scaledSize = size * scale;
+      let scale = window.devicePixelRatio;
+      let scaledSize = size * scale;
       // Normalize coordinate system to use css pixels.
       ctx.scale(scale, scale);
       canvas.width = scaledSize;
@@ -90,8 +86,7 @@ function ProgressCircle(props: SpectrumProgressCircleProps, ref: DOMRef<HTMLDivE
 
       function draw() {
         ctx.clearRect(0, 0, scaledSize, scaledSize);
-        let original = offcanvas.getContext('2d').getImageData(0, 0, scaledSize, scaledSize);
-        ctx.putImageData(original, 0, 0);
+        ctx.drawImage(offcanvas, 0, 0);
         requestAnimationFrame(draw);
       }
     }
