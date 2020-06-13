@@ -14,6 +14,7 @@ import {number, withKnobs} from '@storybook/addon-knobs';
 import {ProgressCircle} from '../';
 import React, {CSSProperties} from 'react';
 import {storiesOf} from '@storybook/react';
+import {Provider} from '@react-spectrum/provider';
 
 const sliderOptions = {
   range: true,
@@ -104,10 +105,29 @@ storiesOf('Progress/ProgressCircle', module)
         {render({isIndeterminate: true, variant: 'overBackground'})}
       </div>
     )
+  )
+  .add(
+    'stress test',
+    () => renderStressTest()
   );
 
 function render(props = {}) {
   return (
     <ProgressCircle aria-label="Loading…" {...props} />
+  );
+}
+
+function renderStressTest(n = 1) {
+  let combos = [{size: 'S'}, {size: 'M'}, {size: 'L'}];
+  let times = new Array(n).fill(0);
+  return (
+    <>
+      {times.map(() => (
+        <>
+          {combos.map((props: any) => <ProgressCircle aria-label="Loading…" isIndeterminate {...props} />)}
+          {combos.map((props: any) => <ProgressCircle aria-label="Loading…" isIndeterminate variant="overBackground" {...props} />)}
+        </>
+      ))}
+    </>
   );
 }

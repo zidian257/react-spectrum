@@ -57,19 +57,26 @@ function ProgressCircle(props: SpectrumProgressCircleProps, ref: DOMRef<HTMLDivE
   }
 
   let canvasRef = useRef(null);
-  let convertTrack = [57, 57, 57, 1];
-  let convertFill = [28, 128, 235, 1];
   useEffect(() => {
     if (canvasRef.current) {
-      let offcanvas = document.querySelector('#canvas');
+      let spectrumCircleWidth = window.getComputedStyle(canvasRef.current)
+        .getPropertyValue('--spectrum-loader-circle-width');
+      let size = parseInt(spectrumCircleWidth, 10);
+      let spectrumCircleWeight = window.getComputedStyle(canvasRef.current)
+        .getPropertyValue('--spectrum-loader-circle-border-size');
+      let borderWidth = parseInt(spectrumCircleWeight, 10);
+      let spectrumCircleTrackColor = window.getComputedStyle(canvasRef.current)
+        .getPropertyValue('--spectrum-loader-circle-track-color');
+      let spectrumCircleFillColor = window.getComputedStyle(canvasRef.current)
+        .getPropertyValue('--spectrum-loader-circle-track-fill-color');
+      let offcanvas = el.get(getAnimation(size, borderWidth, spectrumCircleTrackColor, spectrumCircleFillColor));
       let canvas;
       let ctx;
       let scale;
-      let size = 64;
       let scaledSize;
 
       canvas = canvasRef.current;
-      ctx = canvas.getContext("2d");
+      ctx = canvas.getContext('2d');
       ctx.globalCompositeOperation = 'destination-in';
       scale = window.devicePixelRatio;
       scaledSize = size * scale;
@@ -84,13 +91,6 @@ function ProgressCircle(props: SpectrumProgressCircleProps, ref: DOMRef<HTMLDivE
       function draw() {
         ctx.clearRect(0, 0, scaledSize, scaledSize);
         let original = offcanvas.getContext('2d').getImageData(0, 0, scaledSize, scaledSize);
-        /*for (var i = 0; i < original.data.length; i++) {
-          if (original.data[i][0] === 0) {
-            original.data[i] = convertTrack;
-          } else {
-            original.data[i] = convertFill;
-          }
-        }*/
         ctx.putImageData(original, 0, 0);
         requestAnimationFrame(draw);
       }
@@ -120,6 +120,8 @@ function ProgressCircle(props: SpectrumProgressCircleProps, ref: DOMRef<HTMLDivE
       </div>
     );
   }
+
+
   return (
     <div
       {...styleProps}
@@ -167,3 +169,55 @@ function ProgressCircle(props: SpectrumProgressCircleProps, ref: DOMRef<HTMLDivE
  */
 let _ProgressCircle = React.forwardRef(ProgressCircle);
 export {_ProgressCircle as ProgressCircle};
+
+let cubicBezier = (P0, P1, P2, P3) => (t) => (1 - t) * (1 - t) * (1 - t) * P0 + 3 * (1 - t) * (1 - t) * t * P1 + 3 * (1 - t) * t * t * P2 + t * t * t * P3;
+let headAnimation = cubicBezier(.04, .72, .3, .9);
+let tailAnimation = cubicBezier(0, 0, 1, 1);
+let el = new Map();
+function getAnimation(size = 64, strokeSize = 4, trackColor, fillColor) {
+  let key = `size${size}trackColor${trackColor}fillColor${fillColor}`;
+  if (el.has(key)) {
+    return key;
+  }
+
+  el.set(key, document.createElement('canvas'));
+  let canvas = el.get(key);
+  let ctx;
+  let scale;
+  let scaledSize;
+  ctx = canvas.getContext('2d');
+  ctx.globalCompositeOperation = 'destination-in';
+  scale = window.devicePixelRatio;
+  scaledSize = size * scale;
+  // Normalize coordinate system to use css pixels.
+  ctx.scale(scale, scale);
+  canvas.width = scaledSize;
+  canvas.height = scaledSize;
+  canvas.style.width = `${size}px`;
+  canvas.style.height = `${size}px`;
+  requestAnimationFrame(draw);
+
+  function draw() {
+    ctx.clearRect(0, 0, scaledSize, scaledSize);
+    let centerX = scaledSize / 2;
+    let centerY = scaledSize / 2;
+    let radius = scaledSize / 2 - (strokeSize * scale * 2);
+    let date = new Date();
+    let m = date.getMilliseconds();
+    let percentThrough = (m / 1000);
+
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+    ctx.strokeStyle = trackColor;
+    ctx.lineWidth = strokeSize * scale;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, (tailAnimation(percentThrough) - 0.5) * 2 * Math.PI, headAnimation(percentThrough) * 2 * Math.PI);
+    ctx.strokeStyle = fillColor;
+    ctx.lineWidth = strokeSize * scale;
+    ctx.stroke();
+    requestAnimationFrame(draw);
+  }
+  return key;
+}

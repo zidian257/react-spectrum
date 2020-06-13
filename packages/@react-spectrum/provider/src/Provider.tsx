@@ -16,7 +16,8 @@ import {filterDOMProps} from '@react-aria/utils';
 import {I18nProvider, useLocale} from '@react-aria/i18n';
 import {ModalProvider, useModalProvider} from '@react-aria/overlays';
 import {ProviderContext, ProviderProps} from '@react-types/provider';
-import React, {useContext, useEffect, useRef} from 'react';
+import React, {useCallback, useContext, useState, useRef} from 'react';
+import reactStyles from './styles.css';
 import {
   shouldKeepSpectrumClassNames,
   useDOMRef,
@@ -43,7 +44,6 @@ function Provider(props: ProviderProps, ref: DOMRef<HTMLDivElement>) {
   let {locale: prevLocale} = useLocale();
   // if the new theme doesn't support the prevColorScheme, we must resort to the auto
   let usePrevColorScheme = !!theme[prevColorScheme];
-
   // importance of color scheme props > parent > auto:(OS > default > omitted)
   let {
     colorScheme = usePrevColorScheme ? prevColorScheme : autoColorScheme,
@@ -85,7 +85,6 @@ function Provider(props: ProviderProps, ref: DOMRef<HTMLDivElement>) {
   if (!prevContext || props.locale || theme !== prevContext.theme || colorScheme !== prevContext.colorScheme || scale !== prevContext.scale || Object.keys(domProps).length > 0 || otherProps.UNSAFE_className || Object.keys(styleProps.style).length > 0) {
     contents = (
       <ProviderWrapper {...props} ref={ref}>
-        {!prevContext && <CircleLoader />}
         {contents}
       </ProviderWrapper>
     );
@@ -179,62 +178,4 @@ export function useProviderProps<T>(props: T) : T {
     isReadOnly: context.isReadOnly,
     validationState: context.validationState
   }, props);
-}
-
-function CircleLoader() {
-  let canvasRef = useRef(null);
-  useEffect(() => {
-    if (canvasRef.current) {
-      let canvas;
-      let ctx;
-      let scale;
-      let size = 64;
-      let scaledSize;
-      let strokeSize = 4;
-      let cubicBezier = (P0, P1, P2, P3) => (t) => (1 - t) * (1 - t) * (1 - t) * P0 + 3 * (1 - t) * (1 - t) * t * P1 + 3 * (1 - t) * t * t * P2 + t * t * t * P3
-      let headAnimation = cubicBezier(.04, .72, .3, .9);
-      let tailAnimation = cubicBezier(0, 0, 1, 1);
-      canvas = canvasRef.current;
-      ctx = canvas.getContext("2d");
-      ctx.globalCompositeOperation = 'destination-in';
-      scale = window.devicePixelRatio;
-      scaledSize = size * scale;
-      // Normalize coordinate system to use css pixels.
-      ctx.scale(scale, scale);
-      canvas.width = scaledSize;
-      canvas.height = scaledSize;
-      canvas.style.width = `${size}px`;
-      canvas.style.height = `${size}px`;
-      requestAnimationFrame(draw);
-
-      function draw() {
-        ctx.clearRect(0, 0, scaledSize, scaledSize);
-        var centerX = scaledSize / 2;
-        var centerY = scaledSize / 2;
-        var radius = scaledSize / 2 - (strokeSize * scale * 2);
-        let date = new Date();
-        let m = date.getMilliseconds();
-        let percentThrough = (m / 1000);
-
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-        ctx.strokeStyle = 'rgb(0, 0, 0)';
-        ctx.lineWidth = strokeSize * scale;
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, radius, (tailAnimation(percentThrough) - 0.5) * 2 * Math.PI, headAnimation(percentThrough) * 2 * Math.PI);
-        ctx.strokeStyle = 'rgb(255, 255, 255)';
-        ctx.lineWidth = strokeSize * scale;
-        ctx.stroke();
-        requestAnimationFrame(draw);
-      }
-    }
-  }, [canvasRef.current]);
-
-  return (
-    <div style={{position: 'absolute', top: 'calc(0px - 100%)', bottom: 'calc(0px - 100%)'}}>
-      <canvas id="canvas" ref={canvasRef} />
-    </div>
-  );
 }

@@ -14,19 +14,22 @@ governing permissions and limitations under the License.
 @import 'animation.css';
 
 .spectrum-CircleLoader {
+  --spectrum-loader-circle-width: var(--spectrum-loader-circle-medium-width);
+  --spectrum-loader-circle-height: var(--spectrum-loader-circle-medium-height);
+  --spectrum-loader-circle-border-size: var(--spectrum-loader-circle-medium-border-size);
   display: inline-block;
-  width: var(--spectrum-loader-circle-medium-width);
-  height: var(--spectrum-loader-circle-medium-height);
+  width: var(--spectrum-loader-circle-width);
+  height: var(--spectrum-loader-circle-height);
   position: relative;
   direction: ltr;
 }
 .spectrum-CircleLoader-track {
   box-sizing: border-box;
-  width: calc(var(--spectrum-loader-circle-medium-width));
-  height: calc(var(--spectrum-loader-circle-medium-height));
+  width: calc(var(--spectrum-loader-circle-width));
+  height: calc(var(--spectrum-loader-circle-height));
   border-style: solid;
-  border-width: var(--spectrum-loader-circle-medium-border-size);
-  border-radius: var(--spectrum-loader-circle-medium-width);
+  border-width: var(--spectrum-loader-circle-border-size);
+  border-radius: var(--spectrum-loader-circle-width);
 }
 .spectrum-CircleLoader-fills {
   position: absolute;
@@ -37,11 +40,11 @@ governing permissions and limitations under the License.
 }
 .spectrum-CircleLoader-fill {
   box-sizing: border-box;
-  width: calc(var(--spectrum-loader-circle-medium-width));
-  height: calc(var(--spectrum-loader-circle-medium-height));
+  width: calc(var(--spectrum-loader-circle-width));
+  height: calc(var(--spectrum-loader-circle-height));
   border-style: solid;
-  border-width: var(--spectrum-loader-circle-medium-border-size);
-  border-radius: var(--spectrum-loader-circle-medium-width);
+  border-width: var(--spectrum-loader-circle-border-size);
+  border-radius: var(--spectrum-loader-circle-width);
 }
 .spectrum-CircleLoader-fillMask1,
 .spectrum-CircleLoader-fillMask2 {
@@ -65,44 +68,15 @@ governing permissions and limitations under the License.
 }
 
 .spectrum-CircleLoader--small {
-  width: var(--spectrum-loader-circle-small-width);
-  height: var(--spectrum-loader-circle-small-height);
-
-  .spectrum-CircleLoader-track {
-    width: calc(var(--spectrum-loader-circle-small-width));
-    height: calc(var(--spectrum-loader-circle-small-height));
-    border-style: solid;
-    border-width: var(--spectrum-loader-circle-small-border-size);
-    border-radius: var(--spectrum-loader-circle-small-width);
-  }
-  .spectrum-CircleLoader-fill {
-    width: calc(var(--spectrum-loader-circle-small-width));
-    height: calc(var(--spectrum-loader-circle-small-height));
-    border-style: solid;
-    border-width: var(--spectrum-loader-circle-small-border-size);
-    border-radius: var(--spectrum-loader-circle-small-width);
-  }
+  --spectrum-loader-circle-width: var(--spectrum-loader-circle-small-width);
+  --spectrum-loader-circle-height: var(--spectrum-loader-circle-small-height);
+  --spectrum-loader-circle-border-size: var(--spectrum-loader-circle-small-border-size);
 }
 
 .spectrum-CircleLoader--large {
-  width: var(--spectrum-loader-circle-large-width);
-  height: var(--spectrum-loader-circle-large-height);
-
-  .spectrum-CircleLoader-track {
-    width: calc(var(--spectrum-loader-circle-large-width));
-    height: calc(var(--spectrum-loader-circle-large-height));
-    border-style: solid;
-    border-width: var(--spectrum-loader-circle-large-border-size);
-    border-radius: var(--spectrum-loader-circle-large-width);
-  }
-
-  .spectrum-CircleLoader-fill {
-    width: calc(var(--spectrum-loader-circle-large-width));
-    height: calc(var(--spectrum-loader-circle-large-height));
-    border-style: solid;
-    border-width: var(--spectrum-loader-circle-large-border-size);
-    border-radius: var(--spectrum-loader-circle-large-width);
-  }
+  --spectrum-loader-circle-width: var(--spectrum-loader-circle-large-width);
+  --spectrum-loader-circle-height: var(--spectrum-loader-circle-large-height);
+  --spectrum-loader-circle-border-size: var(--spectrum-loader-circle-large-border-size);
 }
 
 .spectrum-CircleLoader--indeterminate {
