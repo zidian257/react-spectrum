@@ -295,6 +295,7 @@ export default {};
         // These don't need to be bundled.
         react: false,
         '@mdx-js/react': false,
+        '@babel/runtime': false,
         'react-dom': false,
         'intl-messageformat': false,
         'globals-docs': false,
