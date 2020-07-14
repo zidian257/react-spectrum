@@ -17,52 +17,55 @@
 import styles from '@adobe/spectrum-css-temp/components/rule/vars.css';
 // import {useSeparator} from '@react-aria/separator';
 
-let sizeMap = {
-  S: 'small',
-  M: 'medium',
-  L: 'large'
-};
+// let sizeMap = {
+//   S: 'small',
+//   M: 'medium',
+//   L: 'large'
+// };
 
 export function Divider(props: SpectrumDividerProps, ref: DOMRef) {
-  props = useSlotProps(props, 'divider');
-  let {
-    size = 'L',
-    orientation = 'horizontal',
-    ...otherProps
-  } = props;
-  let domRef = useDOMRef(ref);
-  let {styleProps} = useStyleProps(otherProps);
-  let weight = sizeMap[size];
+  // props = useSlotProps(props, 'divider');
+  // let {
+  //   size = 'L',
+  //   orientation = 'horizontal',
+  //   ...otherProps
+  // } = props;
+  // let domRef = useDOMRef(ref);
+  // let {styleProps} = useStyleProps(otherProps);
+  // let weight = sizeMap[size];
 
-  let Element = 'hr';
-  if (orientation === 'vertical') {
-    Element = 'div';
-  }
+  // let Element = 'hr';
+  // if (orientation === 'vertical') {
+  //   Element = 'div';
+  // }
 
-  let {separatorProps} = useSeparator({
-    ...props,
-    elementType: Element
-  });
+  // let {separatorProps} = useSeparator({
+  //   ...props,
+  //   elementType: Element
+  // });
 
-  return (
-    <Element
-      {...styleProps}
-      className={
-        classNames(
-          styles,
-          'spectrum-Rule',
-          `spectrum-Rule--${weight}`,
-          {
-            'spectrum-Rule--vertical': orientation === 'vertical',
-            'spectrum-Rule--horizontal': orientation === 'horizontal'
-          },
-          styleProps.className
-        )
-      }
-      // @ts-ignore https://github.com/Microsoft/TypeScript/issues/28892
-      ref={domRef}
-      {...separatorProps} />
-  );
+  console.log(styles)
+
+//   return (
+//     <Element
+// //      {...styleProps}
+//       className={
+//         classNames(
+//           styles,
+//           'spectrum-Rule',
+//           `spectrum-Rule--${weight}`,
+//           {
+//             'spectrum-Rule--vertical': orientation === 'vertical',
+//             'spectrum-Rule--horizontal': orientation === 'horizontal'
+//           },
+//           styleProps.className
+//         )
+//       }
+//       // @ts-ignore https://github.com/Microsoft/TypeScript/issues/28892
+//       //ref={domRef}
+//       //{...separatorProps}
+//       />
+//   );
 }
 
 // *
