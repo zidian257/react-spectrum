@@ -10,4 +10,11 @@
  * governing permissions and limitations under the License.
  */
 
-export * from './Divider';
+// export * from './Divider';
+
+import styles from '@adobe/spectrum-css-temp/components/rule/vars.css';
+
+export function Divider(props: SpectrumDividerProps, ref: DOMRef) {
+  console.log(styles)
+}
+
