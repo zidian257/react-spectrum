@@ -10,31 +10,25 @@
  * governing permissions and limitations under the License.
  */
 
-// import React, {forwardRef, RefObject, useRef} from 'react';
-// import {SpectrumTextFieldProps, TextFieldRef} from '@react-types/textfield';
-// import {TextFieldBase} from './TextFieldBase';
-import labelStyles from '@adobe/spectrum-css-temp/components/fieldlabel/vars.css';
-import styles from '@adobe/spectrum-css-temp/components/textfield/vars.css';
-// import {useFormProps} from '@react-spectrum/form';
+import React, {forwardRef, RefObject, useRef} from 'react';
+import {SpectrumTextFieldProps, TextFieldRef} from '@react-types/textfield';
+import {TextFieldBase} from './TextFieldBase';
+import {useProviderProps} from '@react-spectrum/provider';
+import {useTextField} from '@react-aria/textfield';
 
-// import {useProviderProps} from '@react-spectrum/provider';
-// import {useTextField} from '@react-aria/textfield';
+function TextField(props: SpectrumTextFieldProps, ref: RefObject<TextFieldRef>) {
+  props = useProviderProps(props);
 
-export function TextField(props: SpectrumTextFieldProps, ref: RefObject<TextFieldRef>) {
-  // console.log(useFormProps);
-  return false;
-  // props = useProviderProps(props);
-
-  // let inputRef = useRef<HTMLInputElement & HTMLTextAreaElement>();
-  // let {labelProps, inputProps} = useTextField(props, inputRef);
-  // return (
-  //   <TextFieldBase
-  //     {...props}
-  //     labelProps={labelProps}
-  //     inputProps={inputProps}
-  //     ref={ref}
-  //     inputRef={inputRef} />
-  // );
+  let inputRef = useRef<HTMLInputElement & HTMLTextAreaElement>();
+  let {labelProps, inputProps} = useTextField(props, inputRef);
+  return (
+    <TextFieldBase
+      {...props}
+      labelProps={labelProps}
+      inputProps={inputProps}
+      ref={ref}
+      inputRef={inputRef} />
+  );
 }
 
 /**
@@ -42,5 +36,5 @@ export function TextField(props: SpectrumTextFieldProps, ref: RefObject<TextFiel
  * with a keyboard. Various decorations can be displayed around the field to
  * communicate the entry requirements.
  */
-// const _TextField = forwardRef(TextField);
-// export {_TextField as TextField};
+const _TextField = forwardRef(TextField);
+export {_TextField as TextField};
