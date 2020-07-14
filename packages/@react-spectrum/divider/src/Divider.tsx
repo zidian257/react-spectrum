@@ -10,12 +10,12 @@
  * governing permissions and limitations under the License.
  */
 
-import {classNames, useDOMRef, useSlotProps, useStyleProps} from '@react-spectrum/utils';
-import {DOMRef} from '@react-types/shared';
-import React from 'react';
-import {SpectrumDividerProps} from '@react-types/divider';
+// import {classNames, useDOMRef, useSlotProps, useStyleProps} from '@react-spectrum/utils';
+// import {DOMRef} from '@react-types/shared';
+// import React from 'react';
+// import {SpectrumDividerProps} from '@react-types/divider';
 import styles from '@adobe/spectrum-css-temp/components/rule/vars.css';
-import {useSeparator} from '@react-aria/separator';
+// import {useSeparator} from '@react-aria/separator';
 
 let sizeMap = {
   S: 'small',
@@ -23,7 +23,7 @@ let sizeMap = {
   L: 'large'
 };
 
-function Divider(props: SpectrumDividerProps, ref: DOMRef) {
+export function Divider(props: SpectrumDividerProps, ref: DOMRef) {
   props = useSlotProps(props, 'divider');
   let {
     size = 'L',
@@ -65,9 +65,9 @@ function Divider(props: SpectrumDividerProps, ref: DOMRef) {
   );
 }
 
-/**
- * Dividers bring clarity to a layout by grouping and dividing content in close proximity.
- * They can also be used to establish rhythm and hierarchy.
- */
-let _Divider = React.forwardRef(Divider);
-export {_Divider as Divider};
+// *
+//  * Dividers bring clarity to a layout by grouping and dividing content in close proximity.
+//  * They can also be used to establish rhythm and hierarchy.
+
+// let _Divider = React.forwardRef(Divider);
+// export {_Divider as Divider};
