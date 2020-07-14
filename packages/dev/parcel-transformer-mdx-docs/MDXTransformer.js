@@ -294,6 +294,7 @@ export default {};
       includeNodeModules: {
         // These don't need to be bundled.
         react: false,
+        '@mdx-js/react': false,
         'react-dom': false,
         'intl-messageformat': false,
         'globals-docs': false,
