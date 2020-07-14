@@ -10,35 +10,36 @@
  * governing permissions and limitations under the License.
  */
 
-import {Example} from './ThemeSwitcher';
-import {Flex} from '@react-spectrum/layout';
-import {Item, Picker} from '@react-spectrum/picker';
-import {Provider} from '@react-spectrum/provider';
-import React, {useState} from 'react';
+// import {Example} from './ThemeSwitcher';
+// import {Flex} from '@react-spectrum/layout';
+// import {Item, Picker} from '@react-spectrum/picker';
+// import {Provider} from '@react-spectrum/provider';
+// import React, {useState} from 'react';
 
 export function ExampleThemeSwitcher({children}) {
-  let [colorScheme, setColorScheme] = useState();
-  let [scale, setScale] = useState();
+  return false;
+  // let [colorScheme, setColorScheme] = useState();
+  // let [scale, setScale] = useState();
 
-  return (
-    <Example colorScheme={colorScheme}>
-      <Flex direction="column">
-        <Flex marginBottom="size-250">
-          <Picker label="Color Scheme" selectedKey={colorScheme} onSelectionChange={setColorScheme} marginEnd="size-250">
-            <Item key="light">Light</Item>
-            <Item key="dark">Dark</Item>
-          </Picker>
-          <Picker label="Scale" selectedKey={scale} onSelectionChange={setScale}>
-            <Item key="medium">Medium (desktop)</Item>
-            <Item key="large">Large (mobile)</Item>
-          </Picker>
-        </Flex>
-        <Provider scale={scale}>
-          <Flex>
-            {children}
-          </Flex>
-        </Provider>
-      </Flex>
-    </Example>
-  );
+  // return (
+  //   <Example colorScheme={colorScheme}>
+  //     <Flex direction="column">
+  //       <Flex marginBottom="size-250">
+  //         <Picker label="Color Scheme" selectedKey={colorScheme} onSelectionChange={setColorScheme} marginEnd="size-250">
+  //           <Item key="light">Light</Item>
+  //           <Item key="dark">Dark</Item>
+  //         </Picker>
+  //         <Picker label="Scale" selectedKey={scale} onSelectionChange={setScale}>
+  //           <Item key="medium">Medium (desktop)</Item>
+  //           <Item key="large">Large (mobile)</Item>
+  //         </Picker>
+  //       </Flex>
+  //       <Provider scale={scale}>
+  //         <Flex>
+  //           {children}
+  //         </Flex>
+  //       </Provider>
+  //     </Flex>
+  //   </Example>
+  // );
 }

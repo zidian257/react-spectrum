@@ -10,68 +10,72 @@
  * governing permissions and limitations under the License.
  */
 
-import {ActionButton} from '@react-spectrum/button';
-import Light from '@spectrum-icons/workflow/Light';
-import Moon from '@spectrum-icons/workflow/Moon';
-import {Provider} from '@react-spectrum/provider';
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import styles from './docs.css';
-import {theme} from '@react-spectrum/theme-default';
+// import {ActionButton} from '@react-spectrum/button';
+// import Light from '@spectrum-icons/workflow/Light';
+// import Moon from '@spectrum-icons/workflow/Moon';
+// import {Provider} from '@react-spectrum/provider';
+// import React, {useCallback, useEffect, useMemo, useState} from 'react';
+// import styles from './docs.css';
+// import {theme} from '@react-spectrum/theme-default';
 
-function useCurrentColorScheme() {
-  let mq = useMemo(() => window.matchMedia('(prefers-color-scheme: dark)'), []);
-  let getCurrentColorScheme = useCallback(() => localStorage.theme || (mq.matches ? 'dark' : 'light'), [mq]);
-  let [colorScheme, setColorScheme] = useState(() => getCurrentColorScheme());
+// function useCurrentColorScheme() {
+//   let mq = useMemo(() => window.matchMedia('(prefers-color-scheme: dark)'), []);
+//   let getCurrentColorScheme = useCallback(() => localStorage.theme || (mq.matches ? 'dark' : 'light'), [mq]);
+//   let [colorScheme, setColorScheme] = useState(() => getCurrentColorScheme());
 
-  useEffect(() => {
-    let onChange = () => {
-      setColorScheme(getCurrentColorScheme());
-    };
+//   useEffect(() => {
+//     let onChange = () => {
+//       setColorScheme(getCurrentColorScheme());
+//     };
 
-    mq.addListener(onChange);
-    window.addEventListener('storage', onChange);
-    return () => {
-      mq.removeListener(onChange);
-      window.removeEventListener('storage', onChange);
-    };
-  }, [getCurrentColorScheme, mq]);
+//     mq.addListener(onChange);
+//     window.addEventListener('storage', onChange);
+//     return () => {
+//       mq.removeListener(onChange);
+//       window.removeEventListener('storage', onChange);
+//     };
+//   }, [getCurrentColorScheme, mq]);
 
-  return colorScheme;
-}
+//   return colorScheme;
+// }
 
 export function ThemeProvider({children, colorScheme: colorSchemeProp, UNSAFE_className}) {
-  let colorScheme = useCurrentColorScheme();
+  // let colorScheme = useCurrentColorScheme();
 
-  return (
-    <Provider theme={theme} colorScheme={colorSchemeProp || colorScheme} UNSAFE_className={UNSAFE_className}>
-      {children}
-    </Provider>
-  );
+  // return (
+  //   <Provider theme={theme} colorScheme={colorSchemeProp || colorScheme} UNSAFE_className={UNSAFE_className}>
+  //     {children}
+  //   </Provider>
+  // );
+  return false;
 }
 
 export function Snippet({children}) {
-  return <ThemeProvider UNSAFE_className={styles.snippet}>{children}</ThemeProvider>;
+  // return <ThemeProvider UNSAFE_className={styles.snippet}>{children}</ThemeProvider>;
+  return false;
 }
 
 export function Example({children, colorScheme}) {
-  return <ThemeProvider colorScheme={colorScheme} UNSAFE_className={styles.example}>{children}</ThemeProvider>;
+  // return <ThemeProvider colorScheme={colorScheme} UNSAFE_className={styles.example}>{children}</ThemeProvider>;
+  return false;
 }
 
 export function ThemeSwitcher() {
-  let colorScheme = useCurrentColorScheme();
-  let onPress = () => {
-    localStorage.theme = (colorScheme === 'dark' ? 'light' : 'dark');
-    window.dispatchEvent(new Event('storage'));
-  };
-  let label = colorScheme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme';
+  // let colorScheme = useCurrentColorScheme();
+  // let onPress = () => {
+  //   localStorage.theme = (colorScheme === 'dark' ? 'light' : 'dark');
+  //   window.dispatchEvent(new Event('storage'));
+  // };
+  // let label = colorScheme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme';
 
-  return (
-    <div title={label}>
-      <ActionButton
-        aria-label={label}
-        onPress={onPress}>
-        {colorScheme === 'dark' ? <Light /> : <Moon />}
-      </ActionButton>
-    </div>
-  );
+  // return (
+  //   <div title={label}>
+  //     <ActionButton
+  //       aria-label={label}
+  //       onPress={onPress}>
+  //       {colorScheme === 'dark' ? <Light /> : <Moon />}
+  //     </ActionButton>
+  //   </div>
+  // );
+  return false;
 }

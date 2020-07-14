@@ -92,76 +92,11 @@ function Page({children, currentPage, publicUrl, styles, scripts}) {
       <head>
         <title>{title}</title>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {/* Server rendering means we cannot use a real <Provider> component to do this.
-            Instead, we apply the default theme classes to the html element. In order to
-            prevent a flash between themes when loading the page, an inline script is put
-            as close to the top of the page as possible to switch the theme as soon as
-            possible during loading. It also handles when the media queries update, or
-            local storage is updated. */}
-        <script
-          dangerouslySetInnerHTML={{__html: `(() => {
-            let classList = document.documentElement.classList;
-            let style = document.documentElement.style;
-            let dark = window.matchMedia('(prefers-color-scheme: dark)');
-            let fine = window.matchMedia('(any-pointer: fine)');
-            let update = () => {
-              if (localStorage.theme === "dark" || (!localStorage.theme && dark.matches)) {
-                classList.remove("${theme.light['spectrum--light']}");
-                classList.add("${theme.dark['spectrum--darkest']}", "${docStyles.dark}");
-                style.colorScheme = 'dark';
-              } else {
-                classList.add("${theme.light['spectrum--light']}");
-                classList.remove("${theme.dark['spectrum--darkest']}", "${docStyles.dark}");
-                style.colorScheme = 'light';
-              }
-
-              if (!fine.matches) {
-                classList.remove("${theme.medium['spectrum--medium']}", "${docStyles.medium}");
-                classList.add("${theme.large['spectrum--large']}", "${docStyles.large}");
-              } else {
-                classList.add("${theme.medium['spectrum--medium']}", "${docStyles.medium}");
-                classList.remove("${theme.large['spectrum--large']}", "${docStyles.large}");
-              }
-            };
-
-            update();
-            dark.addListener(() => {
-              delete localStorage.theme;
-              update();
-            });
-            fine.addListener(update);
-            window.addEventListener('storage', update);
-          })();
-        `.replace(/\n|\s{2,}/g, '')}} />
-        <link rel="preload" as="font" href="https://use.typekit.net/af/eaf09c/000000000000000000017703/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3" crossOrigin="" />
-        <link rel="preload" as="font" href="https://use.typekit.net/af/cb695f/000000000000000000017701/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3" crossOrigin="" />
-        <link rel="preload" as="font" href="https://use.typekit.net/af/505d17/00000000000000003b9aee44/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n9&v=3" crossOrigin="" />
-        <link rel="preload" as="font" href="https://use.typekit.net/af/74ffb1/000000000000000000017702/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i4&v=3" crossOrigin="" />
         {styles.map(s => <link rel="stylesheet" href={s.url} />)}
         {scripts.map(s => <script type={s.type} src={s.url} defer />)}
-        <meta name="description" content={description} />
-        <meta name="keywords" content={keywords} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content={`https://${TLD}${heroImage}`} />
-        <meta property="og:title" content={currentPage.title} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={`https://${TLD}${currentPage.url}`} />
-        <meta property="og:image" content={`https://${TLD}${heroImage}`} />
-        <meta property="og:description" content={description} />
-        <meta property="og:locale" content="en_US" />
       </head>
       <body>
         {children}
-        <script
-          dangerouslySetInnerHTML={{__html: `
-            window.addEventListener('load', () => {
-              let script = document.createElement('script');
-              script.async = true;
-              script.src = 'https://assets.adobedtm.com/a7d65461e54e/01d650a3ee55/launch-4d5498348926.min.js';
-              document.head.appendChild(script);
-            });
-          `}} />
       </body>
     </html>
   );

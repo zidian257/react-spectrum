@@ -10,6 +10,6 @@
  * governing permissions and limitations under the License.
  */
 
-export * from './TextArea';
+// export * from './TextArea';
 export * from './TextField';
-export * from './TextFieldBase';
+// export * from './TextFieldBase';

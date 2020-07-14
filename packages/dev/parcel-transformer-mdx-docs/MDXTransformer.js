@@ -62,19 +62,19 @@ module.exports = new Transformer({
               provider = 'ExampleThemeSwitcher';
             }
 
-            if (/^\s*function (.|\n)*}\s*$/.test(code)) {
-              let name = code.match(/^\s*function (.*?)\s*\(/)[1];
-              code = `(function () {
-                ${code}
-                ReactDOM.render(<${provider}><${name} /></${provider}>, document.getElementById("${id}"));
-              })();`;
-            } else if (/^<(.|\n)*>$/m.test(code)) {
-              code = `(function () {
-                ${code.replace(/^(<(.|\n)*>)$/m, `ReactDOM.render(<${provider}>$1</${provider}>, document.getElementById("${id}"));`)}
-              })();`;
-            }
+            // if (/^\s*function (.|\n)*}\s*$/.test(code)) {
+            //   let name = code.match(/^\s*function (.*?)\s*\(/)[1];
+            //   code = `(function () {
+            //     ${code}
+            //     ReactDOM.render(<${provider}><${name} /></${provider}>, document.getElementById("${id}"));
+            //   })();`;
+            // } else if (/^<(.|\n)*>$/m.test(code)) {
+            //   code = `(function () {
+            //     ${code.replace(/^(<(.|\n)*>)$/m, `ReactDOM.render(<${provider}>$1</${provider}>, document.getElementById("${id}"));`)}
+            //   })();`;
+            // }
 
-            exampleCode.push(code);
+            // exampleCode.push(code);
 
             if (meta === 'snippet') {
               node.meta = null;
@@ -234,18 +234,19 @@ module.exports = new Transformer({
     asset.meta.isMDX = true;
     asset.isSplittable = false;
 
-    // Generate the client bundle. We always need the client script,
-    // and the docs script when there's a TOC or an example on the page.
-    let clientBundle = 'import \'@react-spectrum/docs/src/client\';\n';
-    if (toc.length || exampleCode.length > 0) {
-      clientBundle += 'import \'@react-spectrum/docs/src/docs\';\n';
-    }
+    // // Generate the client bundle. We always need the client script,
+    // // and the docs script when there's a TOC or an example on the page.
+    let clientBundle = "";
+    // let clientBundle = 'import \'@react-spectrum/docs/src/client\';\n';
+    // if (toc.length || exampleCode.length > 0) {
+    //   clientBundle += 'import \'@react-spectrum/docs/src/docs\';\n';
+    // }
 
     // Add example code collected from the MDX.
     if (exampleCode.length > 0) {
-      clientBundle += `import React from 'react';
+      clientBundle += `/*import React from 'react';
 import ReactDOM from 'react-dom';
-import {Example as ExampleProvider} from '@react-spectrum/docs/src/ThemeSwitcher';
+import {Example as ExampleProvider} from '@react-spectrum/docs/src/ThemeSwitcher';*/
 ${exampleCode.join('\n')}
 export default {};
 `;
