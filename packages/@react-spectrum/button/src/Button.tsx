@@ -13,6 +13,7 @@
 import {classNames, SlotProvider, useFocusableRef, useIndeterminate, useSlotProps, useStyleProps} from '@react-spectrum/utils';
 import {FocusableRef} from '@react-types/shared';
 import {FocusRing} from '@react-aria/focus';
+import {mergeProps} from '@react-aria/utils';
 import {ProgressCircle} from '@react-spectrum/progress';
 import React from 'react';
 import {SpectrumButtonProps} from '@react-types/button';
@@ -20,6 +21,7 @@ import {SpectrumProgressCircleProps} from '@react-types/progress';
 import styles from '@adobe/spectrum-css-temp/components/button/vars.css';
 import {Text} from '@react-spectrum/text';
 import {useButton} from '@react-aria/button';
+import {useHover} from '@react-aria/interactions';
 import {useProviderProps} from '@react-spectrum/provider';
 import {VisuallyHidden} from '@react-aria/visually-hidden';
 
@@ -43,6 +45,7 @@ function Button(props: SpectrumButtonProps, ref: FocusableRef) {
   } = props;
   let domRef = useFocusableRef(ref);
   let {buttonProps, isPressed} = useButton(props, domRef);
+  let {hoverProps, isHovered} = useHover({isDisabled});
   let {styleProps} = useStyleProps(otherProps);
   let {isIndeterminate} = useIndeterminate({isPending});
   let progressCircleProps: SpectrumProgressCircleProps = {
@@ -64,7 +67,7 @@ function Button(props: SpectrumButtonProps, ref: FocusableRef) {
     <FocusRing focusRingClass={classNames(styles, 'focus-ring')} autoFocus={autoFocus}>
       <ElementType
         {...styleProps}
-        {...buttonProps}
+        {...mergeProps(buttonProps, hoverProps)}
         ref={domRef}
         className={
           classNames(
@@ -76,6 +79,7 @@ function Button(props: SpectrumButtonProps, ref: FocusableRef) {
               'is-disabled': isDisabled || isIndeterminate,
               'is-active': isPressed,
               'is-pending': isPending
+              'is-hovered': isHovered
             },
             styleProps.className
           )
