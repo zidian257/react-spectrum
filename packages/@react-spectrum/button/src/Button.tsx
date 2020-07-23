@@ -78,7 +78,7 @@ function Button(props: SpectrumButtonProps, ref: FocusableRef) {
               'spectrum-Button--quiet': isQuiet,
               'is-disabled': isDisabled || isIndeterminate,
               'is-active': isPressed,
-              'is-pending': isPending
+              'is-pending': isPending,
               'is-hovered': isHovered
             },
             styleProps.className
