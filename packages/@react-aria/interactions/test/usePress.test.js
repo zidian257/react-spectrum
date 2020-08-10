@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-import {fireEvent, render} from '@testing-library/react';
+import {act, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 import {usePress} from '../';
 
@@ -1555,6 +1555,45 @@ describe('usePress', function () {
           shiftKey: false
         }
       ]);
+    });
+  });
+
+  describe('prevent long press text selection when pressed', function () {
+    beforeAll(() => {
+      Object.defineProperty(HTMLElement.prototype, 'scrollHeight', {configurable: true, value: mockScrollHeight});
+    });
+
+    afterAll(() => {
+      Object.defineProperty(HTMLElement.prototype, 'scrollHeight', oldScrollHeight);
+    });
+
+
+    it('should always remove user-select: none added to HTML element style', function () {
+      let events = [];
+      let addEvent = (e) => events.push(e);
+      let res = render(
+        <Example
+          onPressStart={addEvent}
+          onPressEnd={addEvent}
+          onPressChange={pressed => addEvent({type: 'presschange', pressed})}
+          onPress={addEvent}
+          onPressUp={addEvent} />
+      );
+
+      let el = res.getByText('test');
+      let {container} = res;
+      fireEvent(el, pointerEvent('pointerdown', {pointerId: 1, pointerType: 'mouse', button: 1}));
+      fireEvent(el, pointerEvent('pointerup', {pointerId: 1, pointerType: 'mouse', button: 1}));
+      fireEvent(el, pointerEvent('pointerdown', {pointerId: 1, pointerType: 'mouse', button: 1}));
+      fireEvent(el, pointerEvent('pointermove', {pointerId: 1, pointerType: 'mouse', button: 1, clientX: 100, clientY: 100}));
+      fireEvent(el, pointerEvent('pointerup', {pointerId: 1, pointerType: 'mouse', button: 1, clientX: 100, clientY: 100}));
+
+      act(() => {
+        jest.runAllTimers();
+      });
+      setTimeout(() => {
+        expect(container.style.webkitUserSelect).toEqual('');
+      }, 1000);
     });
   });
 });
